@@ -1,5 +1,7 @@
 const mongoose=require('mongoose');
-const productSchema=new mongoose.Schema(
+const ObjectID = mongoose.Schema.Types.ObjectId
+
+const groupSchema=new mongoose.Schema(
     {
         
         title:{
@@ -29,7 +31,7 @@ const productSchema=new mongoose.Schema(
         bills:[
            {  
             bill:{
-                date:new Date,
+                type:Date,
                 title:String,
                 totalBill:Number,
             },
@@ -49,24 +51,5 @@ const productSchema=new mongoose.Schema(
         timestamps:true
     }
 )
-const Product = mongoose.model('products',productSchema);
-module.exports=Product;
-
-// owner : {
-//     type: ObjectID,
-//     required: true,
-//     ref: 'users'
-// },
-// items: [{
-//     itemId: {
-//         type: ObjectID,
-//         ref: 'products',
-//         require:true
-//     },
-//     quantity:Number
-   
-// }],
-// bill: {
-//     type: Number,
-
-// }
+const Group = mongoose.model('groups',groupSchema);
+module.exports=Group;
