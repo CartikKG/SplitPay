@@ -1,0 +1,15 @@
+#navbar{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+    background-color: rgb(241, 255, 254);
+    /* border-bottom: 1px solid grey; */
+}
+#navbar>img{
+    width: 10%
+}
+#navbar > div{
+    display: flex;
+    gap: 10px;
+}
