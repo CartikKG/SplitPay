@@ -15,10 +15,8 @@ import {
   useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
-import Logo from "../../assets/splitpay-logo.png"
+
 import { OAuthButtonGroup } from "./OAuthButtonGroup";
-import { PasswordField } from "./PasswordField";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
 
@@ -157,6 +155,18 @@ const Signup = () => {
           }}
         >
           <Stack spacing="6">
+          <Stack spacing="5">
+              <FormControl>
+                <FormLabel>Username</FormLabel>
+                <Input required={true} id="userName" type="text" />
+              </FormControl>
+            </Stack>
+            <Stack spacing="5">
+              <FormControl>
+                <FormLabel>Avatar URL</FormLabel>
+                <Input required={true} id="avatar_url" type="text" />
+              </FormControl>
+            </Stack>
             <Stack spacing="5">
               <FormControl>
                 <FormLabel htmlFor="email">Email</FormLabel>
@@ -172,18 +182,8 @@ const Signup = () => {
                 <Input required={true} id="password" type="password" />
               </FormControl>
             </Stack>
-            <Stack spacing="5">
-              <FormControl>
-                <FormLabel>Avatar URL</FormLabel>
-                <Input required={true} id="avatar_url" type="text" />
-              </FormControl>
-            </Stack>
-            <Stack spacing="5">
-              <FormControl>
-                <FormLabel>Username</FormLabel>
-                <Input required={true} id="userName" type="text" />
-              </FormControl>
-            </Stack>
+            
+        
             <HStack justify="space-between">
               <Checkbox defaultChecked>Remember me</Checkbox>
               <Button variant="link" colorScheme="blue" size="sm">
@@ -195,7 +195,7 @@ const Signup = () => {
                 onClick={handleSignup}
                 id="signup"
                 variant="solid"
-                colorScheme="red"
+                colorScheme="pink"
               >
                 Sign Up
               </Button>

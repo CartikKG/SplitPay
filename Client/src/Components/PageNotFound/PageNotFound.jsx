@@ -1,9 +1,12 @@
-import React from 'react'
+import React from 'react';
+import { Box, Button, Container, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
 
 export default function PageNotFound() {
   return (
-    <div>
-      
-    </div>
-  )
+    <Box>
+    
+    <h1> Not Found</h1>
+    </Box>
+  );
 }

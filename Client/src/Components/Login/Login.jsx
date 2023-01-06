@@ -1,8 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-
+import React from "react";
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
-// import { FaFacebook, FaGoogle } from "react-icons/fa";
 import {
   Box,
   Button,
@@ -11,7 +9,6 @@ import {
   Divider,
   FormControl,
   FormLabel,
-  Heading,
   HStack,
   Input,
   Stack,
@@ -20,7 +17,6 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
-import Logo from "../../assets/splitpay-logo.png"
 import { OAuthButtonGroup } from "../Signup/OAuthButtonGroup";
 
 const Login = () => {
@@ -209,7 +205,7 @@ const Login = () => {
                 id="signin"
                 variant="solid"
                 onClick={handleSignin}
-                colorScheme="red"
+                colorScheme="pink"
               >
                 Sign in
               </Button>

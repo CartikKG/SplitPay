@@ -13,3 +13,8 @@
     display: flex;
     gap: 10px;
 }
+@media (max-width:600px){
+    #navbar>a>img{
+        width: 55%
+    }
+}

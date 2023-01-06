@@ -1,0 +1,8 @@
+#logofromfoooter{
+    width: 14%
+}
+@media (max-width:600px){
+    #logofromfoooter{
+        width: 40%
+    }
+}

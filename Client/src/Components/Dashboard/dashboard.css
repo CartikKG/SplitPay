@@ -1,0 +1,9 @@
+#logofromdashboard{
+    width: 85%;
+    margin:auto;
+}
+@media (max-width:600px){
+    #logofromdashboard{
+        width: 60%
+    }
+}

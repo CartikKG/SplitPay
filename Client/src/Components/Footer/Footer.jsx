@@ -9,7 +9,7 @@ import {
     VisuallyHidden,
   } from '@chakra-ui/react';
   import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
-  import { ReactNode } from 'react';
+  import "./Footer.css";
   
  import Logo from "../../assets/splitpay-logo.png"
   const SocialButton = ({
@@ -51,7 +51,7 @@ import {
           spacing={4}
           justify={'center'}
           align={'center'}>
-         <img style={{width:"14%"}} src={Logo} alt="" />
+         <img id="logofromfoooter" src={Logo} alt="" />
           <Stack direction={'row'} spacing={6}>
             <Link href={'#'}>Home</Link>
             <Link href={'#'}>About</Link>

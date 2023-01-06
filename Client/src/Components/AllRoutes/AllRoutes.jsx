@@ -4,16 +4,26 @@ import Home from '../Home/Home'
 import Signup from '../Signup/Signup'
 import { ChakraProvider } from '@chakra-ui/react'
 import Login from '../Login/Login'
+import Navbar from '../Navbar/Navbar'
+import Footer from '../Footer/Footer'
+import PageNotFound from '../PageNotFound/PageNotFound'
 export default function AllRoutes() {
   return (
     <div>
-      <Routes>
+          <ChakraProvider>
+          <Navbar/>
+          </ChakraProvider>
+        <Routes>
         <Route path="/" element={<Home/>}/>
-       
-         <Route path="/signup" element={  <ChakraProvider>  <Signup/> </ChakraProvider>}/>
+         
+         <Route path="/signup" element={    <ChakraProvider>  <Signup/> </ChakraProvider>}/>
          <Route path="/login" element={  <ChakraProvider>  <Login/> </ChakraProvider>}/>
+         <Route path="*" element={  <ChakraProvider> <PageNotFound/> </ChakraProvider>}/>
        
-      </Routes> 
+         </Routes> 
+         <ChakraProvider>
+         <Footer/>
+         </ChakraProvider>
     </div>
   )
 }
