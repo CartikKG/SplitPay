@@ -1,3 +1,15 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
 #carousel{
     height: 400px;
+}
+#landing{
+    font-family: 'Poppins', sans-serif;
+    position: absolute;
+    top: 10%;
+    font-size: 40px;
+    right: 8%;
+    z-index: 1;
+    color: rgb(184, 0, 0);
 }

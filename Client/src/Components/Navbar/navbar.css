@@ -6,8 +6,8 @@
     background-color: rgb(241, 255, 254);
     /* border-bottom: 1px solid grey; */
 }
-#navbar>img{
-    width: 10%
+#navbar>a>img{
+    width: 15%
 }
 #navbar > div{
     display: flex;

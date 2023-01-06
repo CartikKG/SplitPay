@@ -1,15 +1,16 @@
 import React from 'react'
 import Logo from "../../assets/splitpay-logo.png"
+import {Link} from "react-router-dom"
 import { Button, ButtonGroup } from '@chakra-ui/react'
 import "./navbar.css"
 
 export default function Navbar() {
   return (
     <div id="navbar">
-     <img src={Logo} alt="logo-splitpay" />
+     <Link to='/'><img src={Logo} alt="logo-splitpay" /></Link>
      <div>
-     <Button colorScheme='black' variant='outline'>Login</Button>
-     <Button colorScheme='pink'>SignUp</Button></div>
+     <Link to="/login" ><Button colorScheme='black' variant='outline'>Login</Button></Link> 
+     <Link to="/signup" > <Button colorScheme='pink'>SignUp</Button></Link> </div>
     </div>
   )
 }
