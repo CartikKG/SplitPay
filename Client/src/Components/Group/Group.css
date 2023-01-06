@@ -1,5 +1,19 @@
 #topbuttons{
     display: flex;
-    justify-content: space-around;
-    /* gap: 40px; */
+
+}
+#inputBox{
+    display: flex;
+    justify-content: space-evenly;
+    gap: 5px;
+}
+.buttons{
+    padding: 10px;
+    background-color: aqua;
+}
+#topGroup{
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 15px;
+    margin-bottom: 15px;
 }

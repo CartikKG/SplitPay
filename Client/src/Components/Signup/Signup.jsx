@@ -50,7 +50,7 @@ const Signup = () => {
       document.getElementById("signup").disabled = false;
     } else {
        let res = await fetch(
-        "https://tata-cliq-server.onrender.com/users/register",
+        `${process.env.SERVER_URL}/users/register`,
         {
           method: "POST",
           headers: { "content-type": "application/json" },

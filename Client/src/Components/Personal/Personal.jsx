@@ -1,15 +1,9 @@
-import React from "react";
+import React from 'react'
 import { Input, InputGroup, InputLeftElement, Button } from "@chakra-ui/react";
-import "./Group.css";
-export default function Group() {
+export default function Personal() {
   return (
     <div>
-      {/* <h1>Group</h1> */}
-      <div id="topGroup">
-        <Button colorScheme="blue">Invite to group</Button>
-        <Button colorScheme="teal">Create new group</Button>
-      </div>
-      <div id="inputBox">
+       <div id="inputBox">
         <Input placeholder="Description" background="white" w={"50%"} />
         <InputGroup w={"35%"}>
           <InputLeftElement
@@ -24,7 +18,6 @@ export default function Group() {
         </InputGroup>
         <Button colorScheme="pink">Add Expence</Button>
       </div>
-      <div id="topbuttons"></div>
     </div>
-  );
+  )
 }

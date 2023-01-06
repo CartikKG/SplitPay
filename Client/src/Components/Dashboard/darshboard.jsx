@@ -27,16 +27,23 @@ import {
   FiHome,
   FiUsers,
   FiClipboard,
-  FiStar,
+  FiMousePointer,
   FiSettings,
   FiMenu,
+  FiBook,
+  FiUser,
   FiChevronDown,
 } from 'react-icons/fi';
 import {Link, Outlet} from 'react-router-dom'
 const LinkItems = [
-  { name: 'Home', icon: FiHome,path:'/' },
-  { name: 'Groups', icon: FiUsers ,path:'/group'}, 
+  { name: 'Home', icon: FiHome,path:'/' }, 
+  { name: 'Personal', icon: FiBook ,path:'/yourdetails'},
+  { name: 'Groups', icon: FiUsers ,path:'/group'},  
+  { name: 'Friends', icon: FiUser ,path:'/friends'},
   { name: 'All Expense', icon: FiClipboard ,path:'/allexpence' },
+  { name: 'Recent Activity', icon: FiMousePointer ,path:'/recentactivity'},
+ 
+ 
   { name: 'Settings', icon: FiSettings ,path:'/setting'},
 ];
 

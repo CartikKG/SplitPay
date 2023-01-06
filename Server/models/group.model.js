@@ -42,7 +42,7 @@ const groupSchema=new mongoose.Schema(
               }
            }
         ],
-        totalBill:{
+        grouptotal:{
             type:Number
         }
 

@@ -79,7 +79,7 @@ const Login = () => {
       } else {
         localStorage.setItem("userToken", data2.data);
 
-        let res2 = await fetch(`https://tata-cliq-server.onrender.com/users`, {
+        let res2 = await fetch(`${process.env.SERVER_URL}/users`, {
           method: "GET",
           headers: { Authorization: data2.data },
         });
@@ -103,21 +103,6 @@ const Login = () => {
     }
   };
 
-  const google = () => {
-    window.open(
-      `http://tata-cliq-server.onrender.com/auth/google/callback`,
-      "_self"
-    );
-    //window.open(`http://localhost:3005/auth/google/callback`, "_self");
-  };
-  const facebook = () => {
-    window.open(
-      `https://tata-cliq-server.onrender.com/auth/facebook/callback`,
-      "_self"
-    );
-  };
-  // document.getElementById("signin").setAttribute("isLoading");
-
   return (
     <Container
       maxW="lg"
@@ -132,11 +117,6 @@ const Login = () => {
     >
       <Stack spacing="">
         <Stack spacing="2">
-          {/* <img
-            style={{ width: "25%", margin: "auto" }}
-            src={Logo}
-            alt=""
-          /> */}
           <Stack
             spacing={{
               base: "2",
@@ -144,14 +124,6 @@ const Login = () => {
             }}
             textAlign="center"
           >
-            {/* <Heading
-              size={useBreakpointValue({
-                base: "xs",
-                md: "sm",
-              })}
-            >
-              Log in to your account
-            </Heading> */}
             <br />
             <HStack spacing="1" justify="center">
               <Text color="muted">Don't have an account?</Text>
