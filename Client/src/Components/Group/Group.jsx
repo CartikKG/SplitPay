@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, InputGroup, InputLeftElement, Button } from "@chakra-ui/react";
+import { Input, InputGroup, InputLeftElement, Button,Divider  } from "@chakra-ui/react";
 import "./Group.css";
 // import {
 //   Tr,
@@ -22,6 +22,8 @@ export default function Group() {
         <Button colorScheme="blue">Invite to group</Button>
         <Button colorScheme="teal">Create new group</Button>
       </div>
+      <Divider borderColor="pink.800" mb={"10px"} />
+      
       <div id="inputBox">
         <Input placeholder="Description" background="white" w={"50%"} />
         <InputGroup w={"35%"}>
@@ -35,8 +37,10 @@ export default function Group() {
           />
           <Input placeholder="0.00" type="number" background="white" />
         </InputGroup>
+        <Input id="inputcalendar" placeholder="Select Date and Time" size="md"  background="white" w={"20%"} type="datetime-local"/>
         <Button colorScheme="pink">Add Expence</Button>
       </div>
+      
       <div id="topbuttons">
       {/* <Tr>
       <Td

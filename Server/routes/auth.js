@@ -19,7 +19,7 @@ router.get("/login/success",async (req, res) => {
     let name=req.user.displayName;
     let email=req.user.emails[0].value;
     let avatar=req.user.photos[0].value;
-    console.log(name,email,avatar);
+    // console.log(name,email,avatar);
     let exitisUser = await User.findOne({ email });
     if (exitisUser) {
        exitisUser=exitisUser.toJSON();

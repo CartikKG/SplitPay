@@ -50,7 +50,7 @@ const Signup = () => {
       document.getElementById("signup").disabled = false;
     } else {
        let res = await fetch(
-        `${process.env.SERVER_URL}/users/register`,
+        `http://localhost:3005/users/register`,
         {
           method: "POST",
           headers: { "content-type": "application/json" },
@@ -67,7 +67,7 @@ const Signup = () => {
           position: "top",
           isClosable: true,
         });
-        navigate("/authenticate");
+        navigate("/login");
       } else {
         toast({
           title: "SignUp Failed!!",

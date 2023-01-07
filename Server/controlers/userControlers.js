@@ -49,12 +49,13 @@ const loginUser = async ({ email, password }) => {
   const exist = await User.findOne({
     email,
     authType: "email-password",
-  }).select("name email password");
+  })
   console.log(exist);
   if (!exist) {
     return " User Not Found with this email";
   }
-  const match = bscryptjs.compareSync(password, exist.password);
+  const passwords=await User.findOne({ email,authType: "email-password"}).select("password");
+  const match = bscryptjs.compareSync(password, passwords.password);
 
   if (match) {
     console.log("sd");

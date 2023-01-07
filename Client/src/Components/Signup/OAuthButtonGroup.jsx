@@ -1,5 +1,6 @@
 import { Button, ButtonGroup, VisuallyHidden } from '@chakra-ui/react'
 import { GitHubIcon, GoogleIcon, TwitterIcon } from './ProviderIcons'
+// require('dotenv').config();
 import { ChakraProvider } from '@chakra-ui/react'
 const providers = [
   {
@@ -18,7 +19,9 @@ const providers = [
 
 export const OAuthButtonGroup = () => (
   <ChakraProvider>
-  <ButtonGroup variant="outline" spacing="4" width="full">
+  <ButtonGroup variant="outline" spacing="4" width="full" onClick={()=>{
+        window.open(`http://localhost:3005/auth/google`,"_self")
+      }}>
     {providers.map(({ name, icon }) => (
       <Button key={name} width="full">
         <VisuallyHidden>Sign in with {name}</VisuallyHidden>

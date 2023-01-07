@@ -17,10 +17,13 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
+import {loginUser} from '../Actions/AllActions'
 import { OAuthButtonGroup } from "../Signup/OAuthButtonGroup";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+  const dispatch=useDispatch()
   const toast = useToast();
   const handleSignin = async () => {
     document.getElementById("signin").innerText = "Loading.....";
@@ -44,7 +47,7 @@ const Login = () => {
     } else {
       console.log("inside");
       let res = await fetch(
-        "https://tata-cliq-server.onrender.com/users/login",
+        "http://localhost:3005/users/login",
         {
           method: "POST",
           headers: { "content-type": "application/json" },
@@ -59,7 +62,7 @@ const Login = () => {
           title: "User Not Found with given Mail ID",
           description: "Please Signup to continue..",
           status: "error",
-          duration: 3000,
+          duration: 5000,
           position: "top",
           isClosable: true,
         });
@@ -78,18 +81,18 @@ const Login = () => {
         document.getElementById("signin").disabled = false;
       } else {
         localStorage.setItem("userToken", data2.data);
-
-        let res2 = await fetch(`${process.env.SERVER_URL}/users`, {
-          method: "GET",
-          headers: { Authorization: data2.data },
-        });
-        let { data } = await res2.json();
-        // console.log(data);
-        let arr = data.filter((el) => {
-          return el.email === obj.email;
-        });
-        // console.log(arr);
-        localStorage.setItem("userId", arr[0]._id);
+        loginUser(data2.data,dispatch)
+        // let res2 = await fetch(`http://localhost:3005/users`, {
+        //   method: "GET",
+        //   headers: { Authorization: data2.data },
+        // });
+        // let { data } = await res2.json();
+        // // console.log(data);
+        // let arr = data.filter((el) => {
+        //   return el.email === obj.email;
+        // });
+        // // console.log(arr);
+        // localStorage.setItem("userId", arr[0]._id);
         toast({
           title: "Login Successful!!",
           description: "Continue Shopping..",

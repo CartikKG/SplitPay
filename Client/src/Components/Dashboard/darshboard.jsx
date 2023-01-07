@@ -21,7 +21,8 @@ import {
   MenuItem,
   MenuList,
 } from '@chakra-ui/react';
-
+import { useSelector, useDispatch } from "react-redux";
+import {logoutUser} from '../Actions/AllActions'
 import { ChakraProvider } from '@chakra-ui/react'
 import {
   FiHome,
@@ -145,6 +146,14 @@ const NavItem = ({ icon, children, ...rest }) => {
 };
 
 const MobileNav = ({ onOpen, ...rest }) => {
+  const {isLogin, userData}=useSelector((state)=>state);
+  // console.log(store);
+  const dispatch=useDispatch();
+  function logoutFunction(){
+    localStorage.clear();
+    logoutUser(dispatch);
+    window.open('http://localhost:3000', "_self");
+  }
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -184,7 +193,8 @@ const MobileNav = ({ onOpen, ...rest }) => {
                 <Avatar
                   size={'sm'}
                   src={
-                    'https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
+                    // 'https://lh3.googleusercontent.com/a/AEdFTp7e87CBV0bKmpuqhX5MHU4YAJ-3Z40OnSFBgL7KdQ=s96-c'
+                  userData.avatar
                   }
                 />
                 <VStack
@@ -192,10 +202,10 @@ const MobileNav = ({ onOpen, ...rest }) => {
                   alignItems="flex-start"
                   spacing="1px"
                   ml="2">
-                  <Text fontSize="sm">Justina Clark</Text>
-                  <Text fontSize="xs" color="gray.600">
+                  <Text fontSize="sm">{userData.name}</Text>
+                  {/* <Text fontSize="xs" color="gray.600">
                     Admin
-                  </Text>
+                  </Text> */}
                 </VStack>
                 <Box display={{ base: 'none', md: 'flex' }}>
                   <FiChevronDown />
@@ -205,11 +215,11 @@ const MobileNav = ({ onOpen, ...rest }) => {
             <MenuList
               bg={useColorModeValue('white', 'gray.900')}
               borderColor={useColorModeValue('gray.200', 'gray.700')}>
-              <MenuItem>Profile</MenuItem>
-              <MenuItem>Settings</MenuItem>
-              <MenuItem>Billing</MenuItem>
+              <MenuItem >Profile</MenuItem>
+              <MenuItem >Settings</MenuItem>
+              <MenuItem >Billing</MenuItem>
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem onClick={logoutFunction}>Sign out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

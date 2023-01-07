@@ -1,13 +1,13 @@
 import AllRoutes from './Components/AllRoutes/AllRoutes';
 import AllRoutesAfterLogin from './Components/AllRoutes/AllRoutesAfterLogin';
-
+import { useSelector } from "react-redux";
 
 function App() {
+  const store=useSelector((state)=>state);
+  console.log(store);
   return (
     <div className="App">
-       {/* <AllRoutes/> */}
-
-         <AllRoutesAfterLogin/>
+      {store.isLogin ? <AllRoutesAfterLogin/> :  <AllRoutes/> }   
     </div>
   );
 }

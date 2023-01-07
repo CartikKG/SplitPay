@@ -20,14 +20,16 @@ import {
   IconProps,
   useColorModeValue,
 } from '@chakra-ui/react';
-
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from 'react-router-dom';
+import {loginUser} from '../Actions/AllActions'
 function Homex() {
+
   return (
     <div >
       
          <Carousel >
-          
-              <img
+             <img
                style={{ width: "100%",height:"100%" }}
                 src={Img2}
                 className="main-image"
@@ -39,16 +41,31 @@ function Homex() {
               />
             
           </Carousel>
-        {/* <div id="landing"> 
-          <h1 > Welcome to SplitPay</h1>
-        </div> */}
 
-         
     </div>
   )
 }
 
 export default function Home() {
+  const navigate=useNavigate();
+  const {isLogin, userData}=useSelector((state)=>state);
+  const dispatch=useDispatch();
+
+  if(!isLogin || !localStorage.getItem('userId')){
+  const search = window.location.search;
+  if (search.includes("code")) {
+    // console.log(search)
+    const copy = new URLSearchParams(search);
+    localStorage.setItem("userToken", copy.get("code"));
+    loginUser(copy.get("code"),dispatch)
+    // window.open('http://localhost:3000', "_self");
+    // navigate('/')
+  }
+  }
+  if(!isLogin && localStorage.getItem('userId')){
+    const token=  localStorage.getItem("userToken");
+    loginUser(token,dispatch)
+  }
   return (
     <>
     <Homex/>
