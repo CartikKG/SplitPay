@@ -31,7 +31,7 @@ const groupSchema=new mongoose.Schema(
         bills:[
            {  
             bill:{
-                type:Date,
+                date:{ type: Date, default: Date.now },
                 title:String,
                 totalBill:Number,
             },

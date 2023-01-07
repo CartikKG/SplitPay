@@ -13,7 +13,8 @@
 }
 #topGroup{
     display: flex;
-    flex-direction: row-reverse;
+    /* flex-direction:  ; */
+    justify-content: space-between;
     gap: 15px;
     margin-bottom: 15px;
 }

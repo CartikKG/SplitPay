@@ -34,10 +34,25 @@ const userSchema=new mongoose.Schema(
             required: true,
             ref: 'users'
         }],
+        personalexpense:[
+            {
+                date:{ type: Date, default: Date.now },
+                title:String,
+                totalBill:Number,
+                
+            }
+        ],
+        allexpense:[
+            {
+                date: { type: Date, default: Date.now },
+                title:String,
+                totalBill:Number,
+                
+            }
+        ],
         authType:{
             type:String,
         }
-        
     },{
         versionKey:false,
         timestamps:true
