@@ -20,18 +20,15 @@ const userSchema=new mongoose.Schema(
         },
         group:[{  
             type:mongoose.Schema.Types.ObjectId,
-            required: true,
             ref:'groups'
 
         }],
         adminGroups:[{
             type:mongoose.Schema.Types.ObjectId,
-            required: true,
             ref: 'groups'}
         ], 
         friends:[{
             type:mongoose.Schema.Types.ObjectId,
-            required: true,
             ref: 'users'
         }],
         personalexpense:[
