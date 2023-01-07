@@ -33,7 +33,7 @@ const userSchema=new mongoose.Schema(
         }],
         personalexpense:[
             {
-                date:{ type: Date, default: Date.now },
+                date:Date,
                 title:String,
                 totalBill:Number,
                 

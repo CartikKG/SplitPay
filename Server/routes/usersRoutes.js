@@ -1,5 +1,6 @@
 const express = require("express");
 const Users = require("../controlers/userControlers");
+const User = require("../models/users.model");
 const authorization = require("../Middleware/authorization");
 const route = express.Router();
 
@@ -19,6 +20,63 @@ route.post("/register", async (req, res) => {
   } catch (error) {
     return res.status(500).send({ error: error.message });
   }
+});
+route.post("/:id", async (req, res) => {
+  const owner = req.params.id;
+  let { description, amount,date } = req.body;
+ try {
+  let cart = await User.findOne({owner}).populate("items.itemId");
+  let price=item.price;
+   if (!item) {
+   return res.status(404).send({ error: "item not found" });
+  }
+
+ if (cart) {
+   let ind=-1;
+   for (let index = 0; index <cart.items.length; index++) {
+     if(cart.items[index].itemId._id==itemId){
+       ind = index;
+       }
+      
+    } 
+    if(ind==-1){
+      cart.items.push({itemId,quantity});
+      let bill=0;
+      for (let index = 0; index <cart.items.length-1; index++) {
+         bill+=cart.items[index].quantity*cart.items[index].itemId.price
+      } 
+      bill+=price*quantity;
+      cart.bill=Number(bill);
+      cart.save();
+       return res.send({
+          cart:cart
+       })
+    }else{
+      cart.items[ind].quantity=quantity;
+      let bill=0;
+      cart.items.forEach(element => {
+        bill+=Number( element.quantity)* Number(element.itemId.price);
+      });
+      cart.bill=Number(bill);
+      cart.save();
+       return res.send({
+          cart:cart
+       })
+
+    }
+  } else {
+  
+     const newCart = await Cart.create({
+      owner,
+      items: [{ itemId,quantity }],
+      bill: Number( quantity) * Number( price),
+    });
+    return res.status(201).send({cart:newCart});
+  }
+} catch (error) {
+  console.log(error);
+  res.status(500).send({error:"something went wrong"});
+}
 });
 route.delete("/:id", async (req, res) => {
   let id = req.params.id;
