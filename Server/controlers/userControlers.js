@@ -50,7 +50,7 @@ const loginUser = async ({ email, password }) => {
     email,
     authType: "email-password",
   })
-  console.log(exist);
+  // console.log(exist);
   if (!exist) {
     return " User Not Found with this email";
   }
