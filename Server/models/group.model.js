@@ -31,7 +31,7 @@ const groupSchema=new mongoose.Schema(
         bills:[
            {  
             bill:{
-                date:{ type: Date, default: Date.now },
+                date:Date,
                 title:String,
                 totalBill:Number,
             },
@@ -41,6 +41,12 @@ const groupSchema=new mongoose.Schema(
                 require:true
               }
            }
+        ],
+        balanceofUsers:[ 
+                { 
+                    user:{type:ObjectID,ref:'users', require:true},
+                    info:{title:String,youPay:Number,youTake:Number,payTo:String}
+                }
         ],
         grouptotal:{
             type:Number

@@ -21,57 +21,51 @@ route.post("/register", async (req, res) => {
     return res.status(500).send({ error: error.message });
   }
 });
-route.post("/:id", async (req, res) => {
+route.post("/personal/:id", async (req, res) => {
   const owner = req.params.id;
-  let { description, amount,date } = req.body;
+  let { title,totalBill, date} = req.body;
  try {
-  let cart = await User.findOne({owner}).populate("items.itemId");
-  let price=item.price;
-   if (!item) {
-   return res.status(404).send({ error: "item not found" });
-  }
+  let user = await User.findOne({owner});
 
- if (cart) {
-   let ind=-1;
-   for (let index = 0; index <cart.items.length; index++) {
-     if(cart.items[index].itemId._id==itemId){
-       ind = index;
-       }
+   if (user) {
+    user.personalexpense.push({title,})
+    // date:Date,
+    // title:String,
+    // totalBill:Number,
+    //  let ind=-1;
+    // for (let index = 0; index <cart.items.length; index++) {
+    //  if(cart.items[index].itemId._id==itemId){
+    //    ind = index;
+    //    }
       
-    } 
-    if(ind==-1){
-      cart.items.push({itemId,quantity});
-      let bill=0;
-      for (let index = 0; index <cart.items.length-1; index++) {
-         bill+=cart.items[index].quantity*cart.items[index].itemId.price
-      } 
-      bill+=price*quantity;
-      cart.bill=Number(bill);
-      cart.save();
-       return res.send({
-          cart:cart
-       })
-    }else{
-      cart.items[ind].quantity=quantity;
-      let bill=0;
-      cart.items.forEach(element => {
-        bill+=Number( element.quantity)* Number(element.itemId.price);
-      });
-      cart.bill=Number(bill);
-      cart.save();
-       return res.send({
-          cart:cart
-       })
+    // } 
+    // if(ind==-1){
+    //   cart.items.push({itemId,quantity});
+    //   let bill=0;
+    //   for (let index = 0; index <cart.items.length-1; index++) {
+    //      bill+=cart.items[index].quantity*cart.items[index].itemId.price
+    //   } 
+    //   bill+=price*quantity;
+    //   cart.bill=Number(bill);
+    //   cart.save();
+    //    return res.send({
+    //       cart:cart
+    //    })
+    // }else{
+    //   cart.items[ind].quantity=quantity;
+    //   let bill=0;
+    //   cart.items.forEach(element => {
+    //     bill+=Number( element.quantity)* Number(element.itemId.price);
+    //   });
+    //   cart.bill=Number(bill);
+    //   cart.save();
+    //    return res.send({
+    //       cart:cart
+    //    })
 
-    }
+    // }
   } else {
-  
-     const newCart = await Cart.create({
-      owner,
-      items: [{ itemId,quantity }],
-      bill: Number( quantity) * Number( price),
-    });
-    return res.status(201).send({cart:newCart});
+     return res.status(401).send({error:"user not found with given id"});
   }
 } catch (error) {
   console.log(error);
