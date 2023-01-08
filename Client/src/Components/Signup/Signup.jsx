@@ -50,7 +50,7 @@ const Signup = () => {
       document.getElementById("signup").disabled = false;
     } else {
        let res = await fetch(
-        `http://localhost:3005/users/register`,
+        `${process.env.REACT_APP_URL_API}/users/register`,
         {
           method: "POST",
           headers: { "content-type": "application/json" },
@@ -102,11 +102,7 @@ const Signup = () => {
     >
       <Stack spacing="">
         <Stack spacing="2">
-          {/* <img
-            style={{ width: "25%", margin: "auto", borderRadius: "4%" }}
-            src={Logo}
-            alt=""
-          /> */}
+      
           <Stack
             spacing={{
               base: "2",
@@ -114,22 +110,7 @@ const Signup = () => {
             }}
             textAlign="center"
           >
-            {/* <Heading
-            size={useBreakpointValue({
-              base: "xs",
-              md: "sm",
-            })}
-          >
-            Log in to your account
-          </Heading> */}
-            {/* <HStack spacing="1" justify="center">
-            <Text color="muted">Don't have an account?</Text>
-            <Link to={"/signup"}>
-              <Button variant="link" colorScheme="blue">
-                Sign up
-              </Button>
-            </Link>
-          </HStack> */}
+        
           </Stack>
         </Stack>
         <Box

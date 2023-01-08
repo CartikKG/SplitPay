@@ -15,14 +15,6 @@ const personalExpense = new mongoose.Schema({
             
         }
     ],
-    allexpense:[
-        {
-            date:Date,
-            title:String,
-            totalBill:Number,
-            
-        }
-    ],
     bill: {
         type: Number,
 

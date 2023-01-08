@@ -5,6 +5,7 @@ const groupRoutes=require('./routes/groupRoutes')
 const config=require('./config/config')
 const cors=require('cors')
 const passport = require('passport');
+const personalExpense= require('./routes/personalExpense')
 const passportSetup = require('./controlers/passport');
 const cookieSession = require("cookie-session");
 const authRoute = require('./routes/auth')
@@ -21,7 +22,8 @@ app.use(
     })
     )
     app.use('/users',usersControler)
-    app.use('/group',groupRoutes)
+    app.use('/group',groupRoutes);
+    app.use('/expense', personalExpense);
     app.use(passport.initialize());
     app.use(passport.session());
 app.use('/auth',authRoute)

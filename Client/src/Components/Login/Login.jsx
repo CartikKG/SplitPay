@@ -47,7 +47,7 @@ const Login = () => {
     } else {
       console.log("inside");
       let res = await fetch(
-        "http://localhost:3005/users/login",
+        `${process.env.REACT_APP_URL_API}/users/login`,
         {
           method: "POST",
           headers: { "content-type": "application/json" },

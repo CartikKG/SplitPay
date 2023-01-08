@@ -1,6 +1,6 @@
 const express = require("express");
 const PersonalExpense = require("../models/personalExpense");
-const Item = require("../models/product.model");
+// const Item = require("../models/product.model");
 const Auth = require("../Middleware/authorization");
 
 const router = new express.Router();
@@ -17,64 +17,64 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const owner = req.params.id;
   try {
-    const data = await PersonalExpense.findOne({owner}).populate("items.itemId");
+    const data = await PersonalExpense.findOne({owner})
       res.status(200).send({data});
    } catch (err) {
     res.status(500).send({error:"Something went wrong"});
   }
 });
-router.post("/:id", async (req, res) => {
-    const owner = req.params.id;
-    let { title, quantity } = req.body;
+router.post("/personal/:id", async (req, res) => {
+   const owner = req.params.id;
+   let { title, date, totalBill  } = req.body;
    try {
-    let personal= await PersonalExpense.findOne({owner}).populate("items.itemId");
-    let item = await Item.findOne({ _id: itemId });
-    let price=item.price;
-     if (!item) {
-     return res.status(404).send({ error: "item not found" });
-    }
-
-   if (cart) {
-     let ind=-1;
-     for (let index = 0; index <cart.items.length; index++) {
-       if(cart.items[index].itemId._id==itemId){
-         ind = index;
-         }
+    let personal= await PersonalExpense.findOne({owner});
+   if (personal) {
+     personal.personalexpense.push({title, date, totalBill})
+     personal.bill =personal.bill+ totalBill,
+     personal.save();
+     return res.send({date:personal});
+    // personal.personalexpense.push({title, date, totalBill})
+      
+    //  let ind=-1;
+    //  for (let index = 0; index <cart.items.length; index++) {
+    //      if(cart.items[index].itemId._id==itemId){
+    //        ind = index;
+    //      }
         
-      } 
-      if(ind==-1){
-        cart.items.push({itemId,quantity});
-        let bill=0;
-        for (let index = 0; index <cart.items.length-1; index++) {
-           bill+=cart.items[index].quantity*cart.items[index].itemId.price
-        } 
-        bill+=price*quantity;
-        cart.bill=Number(bill);
-        cart.save();
-         return res.send({
-            cart:cart
-         })
-      }else{
-        cart.items[ind].quantity=quantity;
-        let bill=0;
-        cart.items.forEach(element => {
-          bill+=Number( element.quantity)* Number(element.itemId.price);
-        });
-        cart.bill=Number(bill);
-        cart.save();
-         return res.send({
-            cart:cart
-         })
+    //   } 
+    //   if(ind==-1){
+    //     cart.items.push({itemId,quantity});
+    //     let bill=0;
+    //     for (let index = 0; index <cart.items.length-1; index++) {
+    //        bill+=cart.items[index].quantity*cart.items[index].itemId.price
+    //     } 
+    //     bill+=price*quantity;
+    //     cart.bill=Number(bill);
+    //     cart.save();
+    //      return res.send({
+    //         cart:cart
+    //      })
+    //   }else{
+    //     cart.items[ind].quantity=quantity;
+    //     let bill=0;
+    //     cart.items.forEach(element => {
+    //       bill+=Number( element.quantity)* Number(element.itemId.price);
+    //     });
+    //     cart.bill=Number(bill);
+    //     cart.save();
+    //      return res.send({
+    //         cart:cart
+    //      })
 
-      }
+    //   }
     } else {
     
-       const newCart = await Cart.create({
-        owner,
-        items: [{ itemId,quantity }],
-        bill: Number( quantity) * Number( price),
+    const newPersonalExpense = await PersonalExpense.create(
+        {owner,
+        personalexpense: [{ title, date, totalBill }],
+        bill: totalBill,
       });
-      return res.status(201).send({cart:newCart});
+      return res.status(201).send({data:newPersonalExpense});
     }
   } catch (error) {
     console.log(error);
