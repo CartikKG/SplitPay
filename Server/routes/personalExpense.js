@@ -23,6 +23,33 @@ router.get("/:id", async (req, res) => {
     res.status(500).send({error:"Something went wrong"});
   }
 });
+router.patch("/:id", async (req, res) => {
+   const owner = req.params.id;
+   const  { title, date, totalBill, itemId } = req.body
+ 
+  try {
+    const personalExpense = await PersonalExpense.findOne({owner})
+    const itemIndex = personalExpense.personalexpense.findIndex((item) => item._id == itemId) 
+    console.log(itemIndex)
+    if (itemIndex > -1) {
+     
+      personalExpense.personalexpense[itemIndex].date=date;
+      personalExpense.personalexpense[itemIndex].title=title;
+      personalExpense.personalexpense[itemIndex].totalBill=totalBill;
+      personalExpense.bill = personalExpense.personalexpense.reduce((acc, curr) => {
+        return acc + curr.totalBill ;
+      },0)
+      personalExpense = await personalExpense.save();
+
+      res.status(200).send({data:personalExpense});
+    } else {
+    res.status(404).send({error:"item not found"});
+    }
+      
+   } catch (err) {
+    res.status(500).send({error:"Something went wrong"});
+   }
+});
 router.post("/personal/:id", async (req, res) => {
    const owner = req.params.id;
    let { title, date, totalBill  } = req.body;
@@ -30,43 +57,10 @@ router.post("/personal/:id", async (req, res) => {
     let personal= await PersonalExpense.findOne({owner});
    if (personal) {
      personal.personalexpense.push({title, date, totalBill})
-     personal.bill =personal.bill+ totalBill,
+     personal.bill =Number(personal.bill)+Number( totalBill),
      personal.save();
      return res.send({date:personal});
-    // personal.personalexpense.push({title, date, totalBill})
-      
-    //  let ind=-1;
-    //  for (let index = 0; index <cart.items.length; index++) {
-    //      if(cart.items[index].itemId._id==itemId){
-    //        ind = index;
-    //      }
-        
-    //   } 
-    //   if(ind==-1){
-    //     cart.items.push({itemId,quantity});
-    //     let bill=0;
-    //     for (let index = 0; index <cart.items.length-1; index++) {
-    //        bill+=cart.items[index].quantity*cart.items[index].itemId.price
-    //     } 
-    //     bill+=price*quantity;
-    //     cart.bill=Number(bill);
-    //     cart.save();
-    //      return res.send({
-    //         cart:cart
-    //      })
-    //   }else{
-    //     cart.items[ind].quantity=quantity;
-    //     let bill=0;
-    //     cart.items.forEach(element => {
-    //       bill+=Number( element.quantity)* Number(element.itemId.price);
-    //     });
-    //     cart.bill=Number(bill);
-    //     cart.save();
-    //      return res.send({
-    //         cart:cart
-    //      })
 
-    //   }
     } else {
     
     const newPersonalExpense = await PersonalExpense.create(
@@ -83,13 +77,16 @@ router.post("/personal/:id", async (req, res) => {
 });
 router.delete("/:id", async (req, res) => {
   const owner = req.params.id;
-  const itemId = req.body.expenseId;
+  const itemId = req.body;
+  // console.log(itemId);
   try {
-    let personalExpense = await PersonalExpense.findOne({ owner });
-
-    const itemIndex = PersonalExpense.personalexpense.findIndex((item) => item._id == itemId);
+    const personalExpense = await PersonalExpense.findOne({ owner });
     
+    const itemIndex = personalExpense.personalexpense.findIndex((item) => item._id == itemId) 
+    
+    console.log("ok") ;
     if (itemIndex > -1) {
+      console.log("ok-2") ;
       let item = personalExpense.personalexpense[itemIndex];
       personalExpense.bill -= item.totalBill;
       if(Number( personalExpense.bill) < 0) {

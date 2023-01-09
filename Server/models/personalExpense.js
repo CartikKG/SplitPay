@@ -23,6 +23,6 @@ const personalExpense = new mongoose.Schema({
     timestamps: true
 })
 
-const PersonalExpense = mongoose.model('Carts', personalExpense)
+const PersonalExpense = mongoose.model('PExpenses', personalExpense)
 
 module.exports = PersonalExpense

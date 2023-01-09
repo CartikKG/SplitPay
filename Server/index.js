@@ -16,11 +16,10 @@ app.use(cookieSession({ name: "session", keys: ["lama"], maxAge: 24 * 60 * 60 * 
 app.use(
     cors({
         origin:'http://localhost:3000',
-        methods:"GET,POST,PUT,DELETE",
+        methods:"GET,POST,PATCH,DELETE",
         credentials:true
-        
-    })
-    )
+}) )
+   
     app.use('/users',usersControler)
     app.use('/group',groupRoutes);
     app.use('/expense', personalExpense);

@@ -41,15 +41,45 @@ export const addPersonalExpense=async(data,dispatch)=>{
         console.log(error)
     }
 }
-const fetchPrnlEx=async(dispatch,userId)=>{
+export const fetchPrnlEx=async(dispatch,userId)=>{
     try {
-        let res= await fetch(`${process.env.REACT_APP_URL_API}/expense/${userId}`);
-        let data=await res.json();
-//    console.log(data)
+        let res= await fetch(`${process.env.REACT_APP_URL_API}/expense/${userId}`)
+        let ress=await res.json();
+        // console.log(ress);
         dispatch({
             type:"PEXPENCE",
-            payload:{...data}
+            payload:{...ress}
         })
+    } catch (error) {
+        
+    }
+}
+export const patchPrnlEx=async(dispatch,userId,data)=>{
+    try {
+        let res= await fetch(`${process.env.REACT_APP_URL_API}/expense/${userId}`,{
+            method:"PATCH",
+            headers:{
+                "content-type":"application/json"
+            },
+            body:JSON.stringify(data)
+        })
+        fetchPrnlEx(dispatch,userId)
+    } catch (error) {
+        
+    }
+}
+export const deletePrnlEx=async(dispatch,data)=>{
+    let userId=localStorage.getItem('userId');
+    console.log(data)
+    try {
+        let res= await fetch(`${process.env.REACT_APP_URL_API}/expense/${userId}`,{
+            method:"DELETE",
+            headers:{
+                "content-type":"application/json"
+            },
+            body:JSON.stringify(data)
+        })
+        fetchPrnlEx(dispatch,userId)
     } catch (error) {
         
     }

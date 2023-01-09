@@ -25,28 +25,69 @@ import {
   AlertDialogOverlay,
   AlertDialogCloseButton,
 } from '@chakra-ui/react'
-import { addPersonalExpense } from "../Actions/AllActions";
+import { useToast } from "@chakra-ui/react";
+import { addPersonalExpense ,deletePrnlEx,patchPrnlEx} from "../Actions/AllActions";
 import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 export default function Personal() {
-  const months=["JAN","FEB","MAR","APR",]
+  let [patchId,setPatchId]=useState("");
+  let [deleteId,setdeleteId]=useState("");
+  const months=["JAN","FEB","MAR","APR","MAY","JUN","JULY","AUG","SEP","OCT"]
+  const toast=useToast()
   const { PEXPENCE } = useSelector((state) => state);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen:isOpen1, onOpen:onOpen1, onClose:onClose1 } = useDisclosure()
   const cancelRef = React.useRef()
   const dispatch = useDispatch();
+  // let deleteId=-1;
+  // let patchId=-1;
   function getInput() {
+    ;
     let title = document.getElementById("title").value;
     let totalBill = document.getElementById("totalBill").value;
     let date = document.getElementById("inputcalendar").value;
-    let obj = {
+    if(title=="" ||totalBill==""||date==""){
+      toast({
+        title: "Add Expense Fail",
+        description: "Fill all the details",
+        status: "error",
+        duration: 2000,
+        position: "top",
+        isClosable: true,
+      });
+    }else{
+       let obj = {
       title,
       totalBill,
       date,
     };
     addPersonalExpense(obj, dispatch);
-    console.log(process.env);
-    console.log(typeof date);
-  }
+
+    }
+   
+  }function setInput(el){
+    // console.log( el.date.substring(0,16))
+      document.getElementById('edittitle').value=el.title
+      document.getElementById('editdate').value=el.date.substring(0,16)
+      document.getElementById('editprice').value=el.totalBill;
+      setPatchId(el._id)
+      // patchId=;
+   }
+   function patchChange(){
+   let userId=localStorage.getItem('userId');
+   let title= document.getElementById('edittitle').value;
+   let date= document.getElementById('editdate').value;
+   let totalBill= document.getElementById('editprice').value;
+   let obj={
+    title,
+    date,
+    totalBill,
+    itemId:patchId
+   }
+    // console.log(obj)
+   patchPrnlEx(dispatch ,userId,obj)
+   }
+   console.log(patchId)
   return (
     <div>
       <div id="inputBox">
@@ -85,13 +126,13 @@ export default function Personal() {
         </Button>
       </div>
       <div>
-        {PEXPENCE.data.personalexpense.map((el) => {
+        {PEXPENCE && PEXPENCE.data && PEXPENCE.data.personalexpense.map((el,i) => {
           const str=el.date.split('-');
-          console.log(str);
+          // console.log(el);
           return (
-            <div className="divforp">
+            <div className="divforp" key={i}>
               <div style={{display:"flex"}}>
-                {/* <div>{ str[1]=="12"?"DEC" ? str[1]=="11"? "NOV"? "el.date":}</div> */}
+                <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginRight:"10px"}}> <div> {str[2][0]+""+str[2][1]}</div> <div>{ str[1]=="12"?"DEC": str[1]=="11" ? "NOV": months[Number(str[1][1])-1]}</div></div>
                 <img
                   className="imgforpe"
                   src="https://s3.amazonaws.com/splitwise/uploads/category/icon/square_v2/uncategorized/general@2x.png"
@@ -99,8 +140,8 @@ export default function Personal() {
                 />
               </div>
               <h3>{el.title}</h3> <div>₹{el.totalBill}</div>{" "}
-              <FiEdit onClick={onOpen} />
-              <FiXCircle onClick={onOpen1} />
+              <FiEdit onClick={async()=>{ patchId=el._id; await onOpen(); await setInput(el)}}  />
+              <FiXCircle onClick={async()=>{ onOpen1(); setdeleteId(el._id)}} />
             </div>
           );
         })}
@@ -128,6 +169,7 @@ export default function Personal() {
                 >
                   <InputGroup w={"93%"}>
                     <InputLeftElement
+                      
                       pointerEvents="none"
                       color="gray.500"
                       fontSize="1.1em"
@@ -137,8 +179,9 @@ export default function Personal() {
                     />
 
                     <Input
+                      id="editprice"
                       placeholder="0.00"
-                      id="totalBill"
+                  
                       type="number"
                       background="white"
                     />
@@ -146,13 +189,15 @@ export default function Personal() {
                   <Input
                     placeholder="Select Date and Time"
                     size="md"
+                    id="editdate"
                     background="white"
+                   
                     w={"93%"}
                     type="datetime-local"
                   />{" "}
                 </div>
               </div>
-              <Input placeholder="Description" background="white" w={"103%"} />{" "}
+              <Input placeholder="Description" id="edittitle" background="white" w={"103%"} />{" "}
               <br />
               <div
                 style={{
@@ -161,7 +206,7 @@ export default function Personal() {
                   marginTop: "10px",
                 }}
               >
-                <Button colorScheme="pink">Edit Expence</Button>
+                <Button colorScheme="pink" onClick={async()=>{await patchChange(); await onClose()}}>Edit Expence</Button>
               </div>
             </ModalBody>
             <ModalFooter>
@@ -180,17 +225,16 @@ export default function Personal() {
         <AlertDialogOverlay />
 
         <AlertDialogContent>
-          <AlertDialogHeader>Discard Changes?</AlertDialogHeader>
+          <AlertDialogHeader>Sure you want to delete an Expense?</AlertDialogHeader>
           <AlertDialogCloseButton />
           <AlertDialogBody>
-            Are you sure you want to discard all of your notes? 44 words will be
-            deleted.
+
           </AlertDialogBody>
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose1}>
               No
             </Button>
-            <Button colorScheme='red' ml={3}>
+            <Button colorScheme='red' ml={3} onClick={async()=>{ deletePrnlEx(dispatch,{itemId:deleteId})  ;  await onClose1()}} >
               Yes
             </Button>
           </AlertDialogFooter>

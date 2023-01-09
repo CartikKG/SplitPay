@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 function App() {
   // console.log(process.env)
   const store=useSelector((state)=>state);
-  // console.log(store);
+  console.log(store);
   return (
     <div className="App">
       {store.isLogin ? <AllRoutesAfterLogin/> :  <AllRoutes/> }   
