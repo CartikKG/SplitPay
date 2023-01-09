@@ -28,7 +28,7 @@ router.patch("/:id", async (req, res) => {
    const  { title, date, totalBill, itemId } = req.body
  
   try {
-    const personalExpense = await PersonalExpense.findOne({owner})
+    let personalExpense = await PersonalExpense.findOne({owner})
     const itemIndex = personalExpense.personalexpense.findIndex((item) => item._id == itemId) 
     console.log(itemIndex)
     if (itemIndex > -1) {
@@ -77,16 +77,16 @@ router.post("/personal/:id", async (req, res) => {
 });
 router.delete("/:id", async (req, res) => {
   const owner = req.params.id;
-  const itemId = req.body;
+  const {itemId }= req.body;
   // console.log(itemId);
   try {
-    const personalExpense = await PersonalExpense.findOne({ owner });
+    let personalExpense = await PersonalExpense.findOne({ owner });
     
     const itemIndex = personalExpense.personalexpense.findIndex((item) => item._id == itemId) 
     
-    console.log("ok") ;
+    // console.log("ok",personalExpense, itemId,itemIndex) ;
     if (itemIndex > -1) {
-      console.log("ok-2") ;
+      // console.log("ok-2") ;
       let item = personalExpense.personalexpense[itemIndex];
       personalExpense.bill -= item.totalBill;
       if(Number( personalExpense.bill) < 0) {

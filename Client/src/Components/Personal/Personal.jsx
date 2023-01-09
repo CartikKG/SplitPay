@@ -26,10 +26,12 @@ import {
   AlertDialogCloseButton,
 } from '@chakra-ui/react'
 import { useToast } from "@chakra-ui/react";
-import { addPersonalExpense ,deletePrnlEx,patchPrnlEx} from "../Actions/AllActions";
+import { addPersonalExpense ,deletePrnlEx,patchPrnlEx, loginCheck} from "../Actions/AllActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 export default function Personal() {
+  const dispatch = useDispatch();
+  // loginCheck(dispatch)
   let [patchId,setPatchId]=useState("");
   let [deleteId,setdeleteId]=useState("");
   const months=["JAN","FEB","MAR","APR","MAY","JUN","JULY","AUG","SEP","OCT"]
@@ -38,7 +40,6 @@ export default function Personal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen:isOpen1, onOpen:onOpen1, onClose:onClose1 } = useDisclosure()
   const cancelRef = React.useRef()
-  const dispatch = useDispatch();
   // let deleteId=-1;
   // let patchId=-1;
   function getInput() {
@@ -87,7 +88,7 @@ export default function Personal() {
     // console.log(obj)
    patchPrnlEx(dispatch ,userId,obj)
    }
-   console.log(patchId)
+  //  console.log(patchId)
   return (
     <div>
       <div id="inputBox">
@@ -141,7 +142,7 @@ export default function Personal() {
               </div>
               <h3>{el.title}</h3> <div>₹{el.totalBill}</div>{" "}
               <FiEdit onClick={async()=>{ patchId=el._id; await onOpen(); await setInput(el)}}  />
-              <FiXCircle onClick={async()=>{ onOpen1(); setdeleteId(el._id)}} />
+              <FiXCircle onClick={async()=>{  setdeleteId(el._id);onOpen1()}} />
             </div>
           );
         })}

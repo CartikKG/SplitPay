@@ -14,6 +14,7 @@ import {
 import {   Flex, Icon, Text } from "@chakra-ui/react";
 // import React from "react";
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
+import { useSelector } from 'react-redux';
 
 
 function StatsCard(props) {
@@ -37,7 +38,8 @@ function StatsCard(props) {
 }
 
 export default function HomeDashboard(props) {
-
+  const store=useSelector((state)=>state);
+  // console.log(store);
   return (
     <>
         <div id="tophomebutton"> 
@@ -54,9 +56,9 @@ export default function HomeDashboard(props) {
         What is our company doing?
       </chakra.h1> */}
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={{ base: 5, lg: 8 }}>
-        <StatsCard borderColor="red" title={'Total Expense'} stat={'₹ 50,000'} />
+        <StatsCard borderColor="red" title={'Total Expense'} stat={ store.PEXPENCE && store.PEXPENCE.data &&  `₹ ${store.PEXPENCE.data.bill}`} />
         <StatsCard title={'Group Expense'} stat={'₹ 50,000'} />
-        <StatsCard title={'Personal Expense'} stat={'₹ 50,000'} />
+        <StatsCard title={'Personal Expense'} stat={ store.PEXPENCE && store.PEXPENCE.data &&  `₹ ${store.PEXPENCE.data.bill}`} />
       </SimpleGrid>
 
       {/* <Box

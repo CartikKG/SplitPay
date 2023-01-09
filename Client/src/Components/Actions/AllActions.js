@@ -1,4 +1,5 @@
 // import { toast } from "reacta-toastify";
+import store from "../Store/store"
 export const loginUser =async(token,dispatch)=>{
     try{
   
@@ -23,7 +24,14 @@ export const logoutUser =async(dispatch)=>{
             type:"LOGOUT"
     })
 }
-
+export const loginCheck=(dispatch)=>{
+    let {isLogin} =store.getState();
+    let token =localStorage.getItem('userToken')
+    if(!isLogin&&localStorage.getItem('userId')){
+        loginUser(token,dispatch)
+    }
+    // console.log(newState)
+}
 export const addPersonalExpense=async(data,dispatch)=>{
     let userId=localStorage.getItem('userId');
     try {
@@ -35,7 +43,7 @@ export const addPersonalExpense=async(data,dispatch)=>{
             body:JSON.stringify(data)
         })
         let ress=await res.json();
-        // console.log(ress);
+      
         fetchPrnlEx(dispatch,userId);
     } catch (error) {
         console.log(error)
@@ -70,7 +78,7 @@ export const patchPrnlEx=async(dispatch,userId,data)=>{
 }
 export const deletePrnlEx=async(dispatch,data)=>{
     let userId=localStorage.getItem('userId');
-    console.log(data)
+   
     try {
         let res= await fetch(`${process.env.REACT_APP_URL_API}/expense/${userId}`,{
             method:"DELETE",

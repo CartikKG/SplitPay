@@ -45,7 +45,7 @@ const Login = () => {
       document.getElementById("signin").innerText = "Sign in";
       document.getElementById("signin").disabled = false;
     } else {
-      console.log("inside");
+      // console.log("inside");
       let res = await fetch(
         `${process.env.REACT_APP_URL_API}/users/login`,
         {
@@ -56,7 +56,7 @@ const Login = () => {
       );
       let data2 = await res.json();
       // console.log(res);
-      console.log(data2.data);
+      // console.log(data2.data);
       if (data2.data === " User Not Found with this email") {
         toast({
           title: "User Not Found with given Mail ID",
