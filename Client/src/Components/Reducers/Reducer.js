@@ -1,7 +1,8 @@
 let intial={
     isLogin:false,
     userData:{},
-    PEXPENCE:{}
+    PEXPENCE:{},
+    allgroup:[],
    
    }
  const Reducer=(state=intial,action)=>{
@@ -17,6 +18,10 @@ let intial={
            case "PEXPENCE":return{
             ...state,
             PEXPENCE:action.payload,
+           }
+           case "ALLGROUP":return{
+            ...state,
+            allgroup:action.payload,
            }
            default: return state
          

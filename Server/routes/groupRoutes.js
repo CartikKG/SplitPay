@@ -30,11 +30,12 @@ route.get('/', async (req,res)=>{
         
     }
 });
-route.post('/',authorization, async (req,res)=>{
-   let body=req.body;
-   let userId=req.user._id;
+route.post('/:id', async (req,res)=>{
+    console.log("OK PAss")
+    let {title,type,img="https://s3.amazonaws.com/splitwise/uploads/group/default_avatars/avatar-orange26-other-50px.png"}=req.body;
+    let userId=req.params.id;
     try {
-        const data=await Group.createNewGroup(body,userId);
+        const data=await Group.createNewGroup(title,type,img,userId);
         return res.status(200).send({data});
     } catch (error) {
         return res.status(500).send({error:error.message});

@@ -12,7 +12,7 @@ const authRoute = require('./routes/auth')
 const app=express();
 app.use(express.json())
 app.use(cookieSession({ name: "session", keys: ["lama"], maxAge: 24 * 60 * 60 * 100 }));
-// app.use(cors())
+
 app.use(
     cors({
         origin:'http://localhost:3000',
@@ -20,11 +20,11 @@ app.use(
         credentials:true
 }) )
    
-    app.use('/users',usersControler)
-    app.use('/group',groupRoutes);
-    app.use('/expense', personalExpense);
-    app.use(passport.initialize());
-    app.use(passport.session());
+app.use('/users',usersControler)
+app.use('/group',groupRoutes);
+app.use('/expense', personalExpense);
+app.use(passport.initialize());
+app.use(passport.session());
 app.use('/auth',authRoute)
 app.listen(config.PORT,async(req,res)=>{
     try {

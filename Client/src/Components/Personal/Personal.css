@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 .imgforpe{
     width: 70px;
 }
@@ -6,6 +7,18 @@
     align-items: center;
     justify-content: space-around;
     border-bottom: 1px solid rgb(222, 222, 222);
+    font-family: 'Poppins', sans-serif;
+   
     padding: 7px;
     margin-bottom: 10px;
+}
+@media (max-width:500px) {
+    .divforp{
+         font-size: 15px;
+    }
+}
+.divforp:hover{
+   cursor: pointer;
+    background-color: rgb(231, 231, 231);
+    /* background-color: grey; */
 }

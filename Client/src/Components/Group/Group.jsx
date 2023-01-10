@@ -1,18 +1,54 @@
 import React from "react";
-import { Input, InputGroup, InputLeftElement, Button,Divider  } from "@chakra-ui/react";
+import {
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Button,
+  Divider,
+} from "@chakra-ui/react";
+import {
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Select,
+  useToast
+} from "@chakra-ui/react";
 import "./Group.css";
-// import {
-//   Tr,
-//   Td,
-//   Flex,
-//   Text,
-//   Progress,
-//   Icon,
-//   // Button,
-//   useColorModeValue,
-// } from "@chakra-ui/react";
-// import { FaEllipsisV } from "react-icons/fa";
+import { createNewgroup } from "../Actions/Allgroupexpense";
+import { useDispatch } from "react-redux";
+
 export default function Group() {
+  const dispatch=useDispatch();
+  const toast=useToast()
+  function fetchedData() {
+    let title = document.getElementById("groupName").value;
+    let type = document.getElementById("groupType").value;
+
+    
+    if(title=="" ||type==""){
+      toast({
+        title: "Create Group Fail",
+        description: "Fill all the details",
+        status: "error",
+        duration: 2000,
+        position: "top",
+        isClosable: true,
+      });
+    }else{
+     let obj={
+      title,
+      type
+     }   
+      createNewgroup(dispatch,obj);
+    };
+
+  }
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <div>
       {/* <h1>Group</h1> */}
@@ -20,10 +56,12 @@ export default function Group() {
         <Button colorScheme="red">Change Group</Button>
         <h1>Group Name</h1>
         <Button colorScheme="blue">Invite to group</Button>
-        <Button colorScheme="teal">Create new group</Button>
+        <Button colorScheme="teal" onClick={onOpen}>
+          Create new group
+        </Button>
       </div>
       <Divider borderColor="pink.800" mb={"10px"} />
-      
+
       <div id="inputBox">
         <Input placeholder="Description" background="white" w={"50%"} />
         <InputGroup w={"35%"}>
@@ -37,57 +75,66 @@ export default function Group() {
           />
           <Input placeholder="0.00" type="number" background="white" />
         </InputGroup>
-        <Input id="inputcalendar" placeholder="Select Date and Time" size="md"  background="white" w={"20%"} type="datetime-local"/>
+        <Input
+          id="inputcalendar"
+          placeholder="Select Date and Time"
+          size="md"
+          background="white"
+          w={"20%"}
+          type="datetime-local"
+        />
         <Button colorScheme="pink">Add Expence</Button>
       </div>
-      
-      <div id="topbuttons">
-      {/* <Tr>
-      <Td
-        minWidth={{ sm: "250px" }}
-        ps='0px'
-        borderBottomColor='#56577A'
-        border={"lastItem" ? "none" : null}>
-        <Flex alignItems='center' py='.8rem' minWidth='100%' flexWrap='nowrap'>
-          <Icon as={"logo"} h={"20px"} w={"20px"} me='18px' />
-          <Text fontSize='sm' color='#fff' minWidth='100%'>
-            {"name"}
-          </Text>
-        </Flex>
-      </Td>
-      <Td borderBottomColor='#56577A' border={"lastItem" ? "none" : null}>
-        <Text fontSize='sm' color='#fff' fontWeight='bold' pb='.5rem'>
-          {"budget"}
-        </Text>
-      </Td>
-      <Td borderBottomColor='#56577A' border={"lastItem" ? "none" : null}>
-        <Text fontSize='sm' color='#fff' fontWeight='bold' pb='.5rem'>
-          {"status"}
-        </Text>
-      </Td>
-      <Td borderBottomColor='#56577A' border={"lastItem" ? "none" : null}>
-        <Flex direction='column'>
-          <Text
-            fontSize='sm'
-            color='#fff'
-            fontWeight='bold'
-            pb='.2rem'>{`${"progression"}%`}</Text>
-          <Progress
-            colorScheme='brand'
-            maxW='125px'
-            h='3px'
-            bg='#2D2E5F'
-            value={"progression"}
-            borderRadius='15px'
-          />
-        </Flex>
-      </Td>
-      <Td borderBottomColor='#56577A' border={"lastItem" ? "none" : null}>
-        <Button p='0px' bg='transparent' _hover='none' _active='none'>
-          <Icon as={FaEllipsisV} color='gray.400' cursor='pointer' />
-        </Button>
-      </Td>
-    </Tr> */}
+
+      <div id="topbuttons"></div>
+      <div id="createnewGroup">
+        <Modal onClose={onClose} size={"xs"} isOpen={isOpen}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader bg="teal" h={"30px"} color="white">
+              Create new group
+            </ModalHeader>
+            <ModalCloseButton color="white" />
+            <ModalBody>
+              <Input 
+                placeholder="Enter group name"
+                id="groupName"
+                background="white"
+                w={"100%"}
+                mb={"8px"}
+              />
+              <Select placeholder="Select group type" id="groupType">
+                <option value="Home">Home</option>
+                <option value="Trip">Trip</option>
+                <option value="Couple">Couple</option>
+                <option value="Other">Other</option>
+              </Select>
+              <h2
+                style={{
+                  color: "grey",
+                  fontSize: "14px",
+                  marginTop: "10px",
+                  marginBottom: "10px",
+                }}
+              >
+                You can invite people after creating a group
+              </h2>
+              {/* <br /> */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  marginTop: "6px",
+                }}
+              >
+                <Button colorScheme="teal" onClick={async () => {await fetchedData();  await onClose()}}>
+                  Create
+                </Button>
+              </div>
+            </ModalBody>
+            <ModalFooter></ModalFooter>
+          </ModalContent>
+        </Modal>
       </div>
     </div>
   );

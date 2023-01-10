@@ -12,13 +12,15 @@ const groupSchema=new mongoose.Schema(
             type:String,
             require:true
         },
-        description:{
-            type:String,
-        },
         admin:{
               type:ObjectID,
               required: true,
               ref: 'users'
+        },
+        type:{
+              type:String,
+              required: true,
+              
         },
         members:[{
                 member: {

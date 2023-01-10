@@ -18,7 +18,8 @@ const getAllGroup = async (page, limit, sortBy, _order, searchBy, q) => {
 
 
 const getGroupByID = (id) => {
-  return Group.findById(id);
+  return Group.find({"members.member":id});
+  
 };
 const deleteGroupByID = async (id, userId) => {
   let Group = await Group.findById(id);
@@ -49,18 +50,18 @@ const patchGroupByID = async (id, patch, userId) => {
   return Group.findByIdAndUpdate(id, patch, { new: true });
 };
 
-const createNewGroup = async (body, id) => {
+const createNewGroup = async (title,type,img, userId) => {
+  // let group=await Group.findOne({admin:userId});
   let ansa = await Group.create({
-    title: body.title,
-    img: body.img,
-    description: body.description,
-    brand: body.brand,
-    price: body.price,
-    strikedprice: body.strikedprice,
-    product_type: body.product_type,
-    department: body.department,
+    title:title,
+    img: img,
+    admin: userId,
+    type: type,
+    members: [{member:userId}],
+    grouptotal: 0,
   });
-  return ansa;
+  return ansa; 
+  
 };
 module.exports = {
   getAllGroup,

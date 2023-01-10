@@ -129,20 +129,19 @@ export default function Personal() {
       <div>
         {PEXPENCE && PEXPENCE.data && PEXPENCE.data.personalexpense.map((el,i) => {
           const str=el.date.split('-');
-          // console.log(el);
           return (
-            <div className="divforp" key={i}>
+            <div className="divforp" key={i} onClick={async()=>{ patchId=el._id; await onOpen(); await setInput(el)}} >
               <div style={{display:"flex"}}>
-                <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginRight:"10px"}}> <div> {str[2][0]+""+str[2][1]}</div> <div>{ str[1]=="12"?"DEC": str[1]=="11" ? "NOV": months[Number(str[1][1])-1]}</div></div>
+                <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginRight:"10px",marginTop:"13px", color:"grey"}}> <div style={{fontSize:"17px"}}> {str[2][0]+""+str[2][1]}</div> <div>{ str[1]=="12"?"DEC": str[1]=="11" ? "NOV": months[Number(str[1][1])-1]}</div></div>
                 <img
                   className="imgforpe"
                   src="https://s3.amazonaws.com/splitwise/uploads/category/icon/square_v2/uncategorized/general@2x.png"
                   alt=""
                 />
               </div>
-              <h3>{el.title}</h3> <div>₹{el.totalBill}</div>{" "}
-              <FiEdit onClick={async()=>{ patchId=el._id; await onOpen(); await setInput(el)}}  />
-              <FiXCircle onClick={async()=>{  setdeleteId(el._id);onOpen1()}} />
+              <h3>{el.title}</h3> <div>₹ {el.totalBill}</div>{" "}
+            
+              <FiXCircle fontSize={"18px"} color={"brown"} onClick={async(event)=>{ event.stopPropagation();  setdeleteId(el._id);onOpen1()}} />
             </div>
           );
         })}
