@@ -18,9 +18,12 @@ const getAllGroup = async (page, limit, sortBy, _order, searchBy, q) => {
 
 
 const getGroupByID = (id) => {
-  return Group.find({"members.member":id});
+  return Group.find({"members.member":id}).populate('admin').populate('members.member').populate("bills.by");
   
 };
+const getcurrentGroupByID=(id)=>{
+  return Group.findById(id).populate('admin').populate('members.member').populate("bills.by");;
+}
 const deleteGroupByID = async (id, userId) => {
   let Group = await Group.findById(id);
 
@@ -63,10 +66,54 @@ const createNewGroup = async (title,type,img, userId) => {
   return ansa; 
   
 };
+// bills:[
+//   {  
+//    bill:{
+//        date:Date,
+//        title:String,
+//        totalBill:Number,
+//    },
+//    by:{
+//        type: ObjectID,
+//        ref: 'users',
+//        require:true
+//      }
+//   }
+// ],
+// balanceofUsers:[ 
+//        { 
+//            user:{type:ObjectID,ref:'users', require:true},
+//            info:{title:String,youPay:Number,youTake:Number,payTo:String}
+//        }
+// ],
+// grouptotal:{
+//    type:Number
+// }
+const addDataGroup = async (title, date, totalBill,id,by)=>{
+  // console.log(userId);
+      let group=await Group.findOne({ _id:id});
+      if(group){
+        // console.log("object")
+        // console.log(group._id)
+        group.bills.push({bill:{date,title,totalBill},by})
+        // group.balanceofUsers.push({id,})
+        
+        group.save();
+        let groups=await Group.findOne({ _id:id}).populate("bills.by");
+        return groups;
+      //  console.log(group,"-------------");
+
+      }else{
+        return "Group Not Found with Id";
+      }
+}
+
 module.exports = {
   getAllGroup,
   getGroupByID,
+  getcurrentGroupByID,
   deleteGroupByID,
   patchGroupByID,
+  addDataGroup,
   createNewGroup,
 };

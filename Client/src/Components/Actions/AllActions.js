@@ -1,5 +1,6 @@
 // import { toast } from "reacta-toastify";
 import store from "../Store/store"
+import { fetchAllGroup, fetchStartGroup } from "./Allgroupexpense";
 export const loginUser =async(token,dispatch)=>{
     try{
   
@@ -15,6 +16,9 @@ export const loginUser =async(token,dispatch)=>{
             payload:data
         })
         fetchPrnlEx(dispatch,data._id);
+        fetchAllGroup(dispatch);
+        
+        
     }catch(err){
        // console.log(err);
     }
@@ -43,7 +47,6 @@ export const addPersonalExpense=async(data,dispatch)=>{
             body:JSON.stringify(data)
         })
         let ress=await res.json();
-      
         fetchPrnlEx(dispatch,userId);
     } catch (error) {
         console.log(error)

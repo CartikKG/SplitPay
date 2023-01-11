@@ -31,11 +31,22 @@ route.get('/', async (req,res)=>{
     }
 });
 route.post('/:id', async (req,res)=>{
-    console.log("OK PAss")
     let {title,type,img="https://s3.amazonaws.com/splitwise/uploads/group/default_avatars/avatar-orange26-other-50px.png"}=req.body;
     let userId=req.params.id;
     try {
         const data=await Group.createNewGroup(title,type,img,userId);
+        return res.status(200).send({data});
+    } catch (error) {
+        return res.status(500).send({error:error.message});
+        
+    }
+});
+route.post('/current/:id', async (req,res)=>{
+    let { title, date, totalBill ,userId } = req.body;
+    let groupId=req.params.id;
+    // console.log("F")
+    try {
+        const data=await Group.addDataGroup(title, date, totalBill,groupId,userId);
         return res.status(200).send({data});
     } catch (error) {
         return res.status(500).send({error:error.message});
@@ -69,6 +80,16 @@ route.get('/:id', async (req,res)=>{
      let id=req.params.id;
     try {
         const data=await Group.getGroupByID(id);
+        return res.status(200).send({data});
+    } catch (error) {
+        return res.status(500).send({error:error.message});
+        
+    }
+});
+route.get('/current/:id', async (req,res)=>{
+     let id=req.params.id;
+    try {
+        const data=await Group.getcurrentGroupByID(id);
         return res.status(200).send({data});
     } catch (error) {
         return res.status(500).send({error:error.message});

@@ -1,5 +1,5 @@
 import React from "react";
-import { FiEdit, FiXCircle } from "react-icons/fi";
+import {  FiXCircle } from "react-icons/fi";
 
 import "./Personal.css";
 import {
@@ -31,7 +31,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 export default function Personal() {
   const dispatch = useDispatch();
-  // loginCheck(dispatch)
+
   let [patchId,setPatchId]=useState("");
   let [deleteId,setdeleteId]=useState("");
   const months=["JAN","FEB","MAR","APR","MAY","JUN","JULY","AUG","SEP","OCT"]
@@ -40,8 +40,6 @@ export default function Personal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen:isOpen1, onOpen:onOpen1, onClose:onClose1 } = useDisclosure()
   const cancelRef = React.useRef()
-  // let deleteId=-1;
-  // let patchId=-1;
   function getInput() {
     ;
     let title = document.getElementById("title").value;
@@ -85,8 +83,7 @@ export default function Personal() {
     totalBill,
     itemId:patchId
    }
-    // console.log(obj)
-   patchPrnlEx(dispatch ,userId,obj)
+    patchPrnlEx(dispatch ,userId,obj)
    }
   //  console.log(patchId)
   return (

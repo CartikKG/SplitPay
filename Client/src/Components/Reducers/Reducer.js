@@ -3,16 +3,19 @@ let intial={
     userData:{},
     PEXPENCE:{},
     allgroup:[],
+    CurrentGroup:"",
+    CurrentGroupData:{}
    
    }
  const Reducer=(state=intial,action)=>{
        switch (action.type){
            case "LOGIN":
                return {
-             
-                isLogin:true,userData:action.payload
+                ...state,
+              isLogin:true,userData:action.payload
            }
            case "LOGOUT":return {
+            ...state,
             isLogin:false,userData:{}
            }
            case "PEXPENCE":return{
@@ -21,7 +24,15 @@ let intial={
            }
            case "ALLGROUP":return{
             ...state,
-            allgroup:action.payload,
+            allgroup:action.payload
+           }
+           case "CurrentGroup":return{
+            ...state,
+            CurrentGroup:action.payload
+           }
+           case "CurrentGroupData":return{
+            ...state,
+            CurrentGroupData:action.payload
            }
            default: return state
          
