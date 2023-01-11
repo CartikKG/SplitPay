@@ -43,14 +43,76 @@
     background-color: rgb(41, 107, 195);
     cursor: pointer;
 }
+
+#dataparentDiv{
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+
+}
+#dataGroupsall{
+    border: 1px solid rgb(232, 221, 221);
+    width: 80%;
+    height:450px;
+      overflow-y: scroll;
+}
+#groupMember{
+    width: 20%;
+   
+    border: 1px solid rgb(229, 216, 216);
+  
+}
+/* #groupMember img{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+} */
+#groupMember>div{
+   display:flex;
+   align-items: center;
+   justify-content:space-between;
+   padding: 9px;
+   border-bottom:1px solid rgb(194, 194, 194);
+   font-family: 'Poppins', sans-serif;
+}
+#groupMember>h1{
+   background-color: rgb(211, 84, 134);
+
+   color: white;
+   text-align: center;
+   font-family: 'Poppins', sans-serif;
+}
+.titleNames{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width:190px
+}
+/* className=""
+style={{
+  
+}} */
 @media (max-width:560px) {
     #inputBox{
         flex-wrap: wrap;
     }
-    #inputcalendar{
+    #inputcalendar,#dategroup{
         width: 54%;
     }
     #showAllgroups>h1{
       font-size: 14.5px;
+    }
+    #groupMember{
+        display: none;
+    }
+    #dataGroupsall{
+        width: 100%;
+    }
+    .imgforpe{
+        width:40px;
+    }
+    .titleNames{
+    
+        width:20px
     }
 }

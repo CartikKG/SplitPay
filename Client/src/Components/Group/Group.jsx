@@ -1,11 +1,12 @@
-import React, { useEffect,useState } from "react";
-import {  FiXCircle } from "react-icons/fi";
+import React, { useEffect, useState } from "react";
+import { FiXCircle } from "react-icons/fi";
 import {
   Input,
   InputGroup,
   InputLeftElement,
   Button,
   Divider,
+  Avatar
 } from "@chakra-ui/react";
 import {
   useDisclosure,
@@ -17,7 +18,7 @@ import {
   ModalBody,
   ModalFooter,
   Select,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import {
   AlertDialog,
@@ -27,33 +28,76 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   AlertDialogCloseButton,
-  Badge
-} from '@chakra-ui/react'
+  Badge,
+  useClipboard,
+  Flex,
+  Editable,
+  EditablePreview,
+  EditableInput,
+} from "@chakra-ui/react";
 // import { useToast } from "@chakra-ui/react";
 // import { addPersonalExpense ,patchPrnlEx, loginCheck} from "../Actions/AllActions";
 import "./Group.css";
-import { addDatatogroup, createNewgroup, getCurrentgroup } from "../Actions/Allgroupexpense";
+import {
+  addDatatogroup,
+  createNewgroup,
+  deleteDatafromgroup,
+  editDatafromgroup,
+  getCurrentgroup,
+  inviteUsertogroup,
+  joinGroup,
+} from "../Actions/Allgroupexpense";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Group() {
-  const {allgroup,CurrentGroupData}=useSelector((state)=>state);
-  // console.log(allgroup);
-  const dispatch=useDispatch();
-  let [patchId,setPatchId]=useState("");
-  let [deleteId,setdeleteId]=useState("");
-  const months=["JAN","FEB","MAR","APR","MAY","JUN","JULY","AUG","SEP","OCT"]
-  const toast=useToast()
+  const placeholder = "text to be copied...";
+  const { userData, allgroup, CurrentGroupData, CurrentGroup } = useSelector(
+    (state) => state
+  );
+  const { onCopy, value, setValue, hasCopied } = useClipboard(CurrentGroup);
+  useEffect(()=>{
+   setValue(CurrentGroup)
+  },[CurrentGroup])
+  const dispatch = useDispatch();
+  let [patchId, setPatchId] = useState("");
+  let [deleteId, setdeleteId] = useState("");
+  const months = [
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAY",
+    "JUN",
+    "JULY",
+    "AUG",
+    "SEP",
+    "OCT",
+  ];
+  const toast = useToast();
   const { PEXPENCE } = useSelector((state) => state);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isOpen:isOpen1, onOpen:onOpen1, onClose:onClose1 } = useDisclosure()
-  const { isOpen:isOpen4, onOpen:onOpen4, onClose:onClose4 } = useDisclosure()
-  const cancelRef = React.useRef()
-  function addData(){
-    let userId=localStorage.getItem('userId');
-    let title= document.getElementById('titlegroup').value;
-    let date= document.getElementById('dategroup').value;
-    let totalBill= document.getElementById('pricegroup').value;
-    if(title=="" ||totalBill==""||date==""){
+  const {
+    isOpen: isOpen1,
+    onOpen: onOpen1,
+    onClose: onClose1,
+  } = useDisclosure();
+  const {
+    isOpen: isOpen4,
+    onOpen: onOpen4,
+    onClose: onClose4,
+  } = useDisclosure();
+  const {
+    isOpen: isOpen5,
+    onOpen: onOpen5,
+    onClose: onClose5,
+  } = useDisclosure();
+  const cancelRef = React.useRef();
+  function addData() {
+    let userId = localStorage.getItem("userId");
+    let title = document.getElementById("titlegroup").value;
+    let date = document.getElementById("dategroup").value;
+    let totalBill = document.getElementById("pricegroup").value;
+    if (title == "" || totalBill == "" || date == "") {
       toast({
         title: "Add Expense Fail",
         description: "Fill all the details",
@@ -62,43 +106,89 @@ export default function Group() {
         position: "top",
         isClosable: true,
       });
-    }else{
-    let obj={
-     title,
-     date,
-     totalBill, 
-     userId
+    } else {
+      let obj = {
+        title,
+        date,
+        totalBill,
+        userId,
+      };
+      addDatatogroup(obj,dispatch);
+
+
     }
-    addDatatogroup(obj);
-    }
-   
   }
-  function setInput(el){
-    // console.log( el.date.substring(0,16))
-      document.getElementById('edittitle').value=el.bill.title
-      document.getElementById('editdate').value=el.bill.date.substring(0,16)
-      document.getElementById('editprice').value=el.bill.totalBill;
-      setPatchId(el._id)
-      // patchId=;
-   }
-  function patchChange(){
-    let userId=localStorage.getItem('userId');
-    let title= document.getElementById('edittitle').value;
-    let date= document.getElementById('editdate').value;
-    let totalBill= document.getElementById('editprice').value;
-    let obj={
-     title,
-     date,
-     totalBill,
-     itemId:patchId
+  function nothing(){
+
+  }
+  function setInput(el) {
+    document.getElementById("edittitle").value = el.bill.title;
+    document.getElementById("editdate").value = el.bill.date.substring(0, 16);
+    document.getElementById("editprice").value = el.bill.totalBill;
+
+  }
+  async function sendInvite() {
+    let groupName = CurrentGroupData.data.title;
+    let name = userData.name;
+    let emailname = document.getElementById("friendname").value;
+    let email = document.getElementById("friendEmail").value;
+    let obj = {
+      groupName,
+      name,
+      email,
+      emailname,
+    };
+    if (emailname == "" || email == "") {
+      toast({
+        title: "Invite Send Fail",
+        description: "Fill all the details",
+        status: "error",
+        duration: 2000,
+        position: "top",
+        isClosable: true,
+      });
+    } else {
+      let res = await inviteUsertogroup(obj);
+      if (res.done) {
+        toast({
+          title: "Something went Wrong in the server",
+          description: "You can use below joining code",
+          status: "error",
+          duration: 2000,
+          position: "top",
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: "Invite Send Succesfully",
+          description: "....",
+          status: "success",
+          duration: 2000,
+          position: "top",
+          isClosable: true,
+        });
+      }
     }
-    console.log(obj)
-    //  patchPrnlEx(dispatch ,userId,obj)
-    }
+  }
+  function patchChange() {
+    let userId = localStorage.getItem("userId");
+    let title = document.getElementById("edittitle").value;
+    let date = document.getElementById("editdate").value;
+    let totalBill = document.getElementById("editprice").value;
+    let obj = {
+      title,
+      date,
+      totalBill,
+      itemId: patchId,
+      userId
+    };
+    editDatafromgroup(obj, dispatch);
+
+  }
   function fetchedData() {
     let title = document.getElementById("groupName").value;
     let type = document.getElementById("groupType").value;
-    if(title=="" ||type==""){
+    if (title == "" || type == "") {
       toast({
         title: "Create Group Fail",
         description: "Fill all the details",
@@ -107,35 +197,70 @@ export default function Group() {
         position: "top",
         isClosable: true,
       });
-    }else{
-     let obj={
-      title,
-      type
-     }   
-      createNewgroup(dispatch,obj);
-    };
-
+    } else {
+      let obj = {
+        title,
+        type,
+      };
+      createNewgroup(dispatch, obj);
+    }
   }
-  const { isOpen:isOpen3, onOpen:onOpen3, onClose:onClose3 } = useDisclosure();
-  
+  const {
+    isOpen: isOpen3,
+    onOpen: onOpen3,
+    onClose: onClose3,
+  } = useDisclosure();
+
   return (
     <div>
-     <div id="showAllgroups">Switch to :- {allgroup && allgroup.data && allgroup.data.map((el,i)=>{return <h1 key={i*2+23}  colorScheme="teal" onClick={()=>{ getCurrentgroup(el._id,dispatch);}}>{el.title} </h1>})}</div>
-     <Divider borderColor="grey.800" mb={"10px"} />
+      <div id="showAllgroups">
+        Switch to :-{" "}
+        {allgroup &&
+          allgroup.data &&
+          allgroup.data.map((el, i) => {
+            return (
+              <h1
+                key={i * 2 + 23}
+                colorScheme="teal"
+                onClick={() => {
+                  getCurrentgroup(el._id, dispatch);
+                }}
+              >
+                {el.title}{" "}
+              </h1>
+            );
+          })}
+      </div>
+      <Divider borderColor="grey.800" mb={"10px"} />
       <div id="topGroup">
         {/* <Button colorScheme="red">Change Group</Button> */}
-        <h1 >Group Name :-  {CurrentGroupData && CurrentGroupData.data && CurrentGroupData.data.title}</h1>
-        <div style={{display:"flex",gap:"10px"}}> 
-        <Button colorScheme="blue" onClick={onOpen4}>Invite to group</Button>
-        <Button colorScheme="teal" onClick={onOpen3}>
-          Create new group
-        </Button></div>
+        <h1>
+          Group Name :-{" "}
+          {CurrentGroupData &&
+            CurrentGroupData.data &&
+            CurrentGroupData.data.title}
+        </h1>
+        <div style={{ display: "flex", gap: "10px" ,flexWrap:"wrap" }}>
+          <Button colorScheme="purple" onClick={onOpen5}>
+            Join group
+          </Button>
+          <Button colorScheme="blue" onClick={onOpen4}>
+            Invite to group
+          </Button>
+          <Button colorScheme="teal" onClick={onOpen3}>
+            Create new group
+          </Button>
+        </div>
       </div>
       <Divider borderColor="pink.800" mb={"10px"} />
 
- 
       <div id="inputBox">
-        <Input placeholder="Description" id="titlegroup"  background="white" w={"50%"} />
+        <Input
+          placeholder="Description"
+          id="titlegroup"
+          background="white"
+          w={"50%"}
+        />
         <InputGroup w={"35%"}>
           <InputLeftElement
             pointerEvents="none"
@@ -145,7 +270,12 @@ export default function Group() {
             m="0%"
             children="₹"
           />
-          <Input placeholder="0.00" type="number" id="pricegroup" background="white" />
+          <Input
+            placeholder="0.00"
+            type="number"
+            id="pricegroup"
+            background="white"
+          />
         </InputGroup>
         <Input
           id="dategroup"
@@ -155,30 +285,96 @@ export default function Group() {
           w={"20%"}
           type="datetime-local"
         />
-        <Button colorScheme="pink" onClick={addData}>Add Expence</Button>
+        <Button colorScheme="pink" onClick={addData}>
+          Add Expence
+        </Button>
       </div>
-      { CurrentGroupData && CurrentGroupData.data && CurrentGroupData.data.bills.map((el,i) => {
-    const str=el.bill.date.split('-');
-    return (
-      <div className="divforp" key={i} onClick={async()=>{ patchId=el._id; await onOpen(); await setInput(el)}} >
-        <div style={{display:"flex"}}>
-          <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginRight:"10px",marginTop:"13px", color:"grey"}}> <div style={{fontSize:"17px"}}> {str[2][0]+""+str[2][1]}</div> <div>{ str[1]=="12"?"DEC": str[1]=="11" ? "NOV": months[Number(str[1][1])-1]}</div></div>
-          <img
-            className="imgforpe"
-            src="https://s3.amazonaws.com/splitwise/uploads/category/icon/square_v2/uncategorized/general@2x.png"
-            alt=""
-          />
-        </div>
-        <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}> 
-        <h3>{el.bill.title} </h3> <Badge variant='outline' colorScheme='green'> 
-   {el.by.name}
-  </Badge></div> <div>₹ {el.bill.totalBill}</div>{" "}
-      
-        <FiXCircle fontSize={"18px"} color={"brown"} onClick={async(event)=>{ event.stopPropagation();  setdeleteId(el._id);onOpen1()}} />
-      </div>
-    );
-  })}
-      <div id="topbuttons"></div>
+      {/*  */}
+      <div id="dataparentDiv">
+      <div id="dataGroupsall">
+      {CurrentGroupData &&
+        CurrentGroupData.data &&
+        CurrentGroupData.data.bills.map((el, i) => {
+          const str = el.bill.date.split("-");
+          return (
+            <div 
+              className={ el.by.name==userData.name ? "divforp":"divforpnots"}
+              key={i}
+              onClick={ el.by.name==userData.name ? async () => {setPatchId(el._id);
+                await onOpen();
+                await setInput(el);
+              } :nothing}
+            >
+              <div style={{ display: "flex" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    marginRight: "10px",
+                    marginTop: "13px",
+                    color: "grey",
+                  }}
+                >
+                  {" "}
+                  <div style={{ fontSize: "17px" }}>
+                    {" "}
+                    {str[2][0] + "" + str[2][1]}
+                  </div>{" "}
+                  <div>
+                    {str[1] == "12"
+                      ? "DEC"
+                      : str[1] == "11"
+                      ? "NOV"
+                      : months[Number(str[1][1]) - 1]}
+                  </div>
+                </div>
+                <img
+                  className="imgforpe"
+                  src="https://s3.amazonaws.com/splitwise/uploads/category/icon/square_v2/uncategorized/general@2x.png"
+                  alt=""
+                />
+              </div> 
+              <div
+                className="titleNames"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  width:"190px"
+                }}
+              >
+                <h3>{el.bill.title} </h3>{" "}
+                <Badge variant="outline" colorScheme="green">
+                  {el.by.name}
+                </Badge>
+              </div>{" "}
+              <div>₹ {el.bill.totalBill}</div>{" "}
+              <FiXCircle
+                fontSize={"18px"}
+                color={"brown"}
+                onClick={ el.by.name==userData.name ? async (event) => {
+                  event.stopPropagation();
+                  setdeleteId(el._id);
+                  onOpen1();
+                }:nothing} 
+              />
+            </div>
+          );
+        })}
+    </div>
+    <div id="groupMember">
+      <h1>ALL MEMBER</h1>
+      {
+        CurrentGroupData &&
+        CurrentGroupData.data &&
+        CurrentGroupData.data.members.map((el,i)=>{
+   
+         return <div key={i}> <Avatar size={'md'}  src={el.member.avatar}/>  <h1>  {el.member.name}</h1> </div>
+        })
+      }
+    </div>
+    </div>
       <div id="createnewGroup">
         <Modal onClose={onClose3} size={"xs"} isOpen={isOpen3}>
           <ModalOverlay />
@@ -188,7 +384,7 @@ export default function Group() {
             </ModalHeader>
             <ModalCloseButton color="white" />
             <ModalBody>
-              <Input 
+              <Input
                 placeholder="Enter group name"
                 id="groupName"
                 background="white"
@@ -219,8 +415,65 @@ export default function Group() {
                   marginTop: "6px",
                 }}
               >
-                <Button colorScheme="teal" onClick={async () => {await fetchedData();  await onClose3()}}>
+                <Button
+                  colorScheme="teal"
+                  onClick={async () => {
+                    await fetchedData();
+                    await onClose3();
+                  }}
+                >
                   Create
+                </Button>
+              </div>
+            </ModalBody>
+            <ModalFooter></ModalFooter>
+          </ModalContent>
+        </Modal>
+      </div>
+      <div id="joinGroup">
+        <Modal onClose={onClose5} size={"xs"} isOpen={isOpen5}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader bg="purple.500" h={"30px"} color="white">
+              Join group
+            </ModalHeader>
+            <ModalCloseButton color="white" />
+            <ModalBody>
+              <Input
+                placeholder="Enter Join Code"
+                id="joinGroupid"
+                background="white"
+                w={"100%"}
+                mb={"8px"}
+              />
+             
+              <h2
+                style={{
+                  color: "grey",
+                  fontSize: "14px",
+                  marginTop: "10px",
+                  marginBottom: "10px",
+                  textAlign: "center",
+                }}
+              >
+                Enter your joining code
+              </h2>
+               <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  marginTop: "6px",
+                }}
+              >
+                <Button
+                  colorScheme="purple"
+                  onClick={async () => {
+                    let res=document.getElementById('joinGroupid').value;
+                    await joinGroup(res,dispatch);
+                    await onClose5();
+                  }}
+                >
+                  Join Now !
                 </Button>
               </div>
             </ModalBody>
@@ -232,53 +485,90 @@ export default function Group() {
         <Modal onClose={onClose4} size={"xs"} isOpen={isOpen4}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader bg="teal" h={"30px"} color="white">
-              Create new group
+            <ModalHeader bg="blue.600" h={"30px"} color="white">
+              Invite to{" "}
+              {CurrentGroupData &&
+                CurrentGroupData.data &&
+                CurrentGroupData.data.title}{" "}
+              Group
             </ModalHeader>
             <ModalCloseButton color="white" />
             <ModalBody>
-              <Input 
-                placeholder="Enter group name"
-                id="groupName"
+              <Input
+                placeholder="Enter name"
+                id="friendname"
                 background="white"
                 w={"100%"}
                 mb={"8px"}
               />
-              <Select placeholder="Select group type" id="groupType">
-                <option value="Home">Home</option>
-                <option value="Trip">Trip</option>
-                <option value="Couple">Couple</option>
-                <option value="Other">Other</option>
-              </Select>
+              <Input
+                placeholder="Enter Friend Email"
+                type={"email"}
+                id="friendEmail"
+                background="white"
+                w={"100%"}
+                mb={"8px"}
+              />
+              <h2
+                style={{
+                  color: "grey",
+                  fontSize: "14px",
+                  marginTop: "10px",
+                  textAlign: "center",
+                  marginBottom: "10px",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: "6px",
+                  }}
+                >
+                  <Button
+                    colorScheme="blue"
+                    onClick={async () => {
+                      await sendInvite();
+                      await onClose4();
+                    }}
+                  >
+                    Send Invite
+                  </Button>
+                </div>
+                Or
+              </h2>
+              <div>
+                <Flex mb={2}>
+                  <Input
+                    style={{ border: "3px solid green" }}
+                    color="green"
+                    placeholder={placeholder}
+                    value={value}
+                    mr={2}
+                  />
+                  <Button colorScheme="green" onClick={onCopy}>
+                    {hasCopied ? "Copied!" : "Copy"}
+                  </Button>
+                </Flex>
+              </div>
               <h2
                 style={{
                   color: "grey",
                   fontSize: "14px",
                   marginTop: "10px",
                   marginBottom: "10px",
+                  textAlign: "center",
                 }}
               >
-                You can invite people after creating a group
+                You can direct send this joining code !
               </h2>
-              {/* <br /> */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  marginTop: "6px",
-                }}
-              >
-                <Button colorScheme="teal" onClick={async () => {await fetchedData();  await onClose4()}}>
-                  Create
-                </Button>
-              </div>
             </ModalBody>
             <ModalFooter></ModalFooter>
           </ModalContent>
         </Modal>
       </div>
       <div id="path&delete">
-      <Modal onClose={onClose} size={"xs"} isOpen={isOpen}>
+        <Modal onClose={onClose} size={"xs"} isOpen={isOpen}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader bg="pink.500" h={"30px"} color="white">
@@ -287,8 +577,9 @@ export default function Group() {
             <ModalCloseButton color="white" />
             <ModalBody>
               <div
-                style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
-               <img
+                style={{ display: "flex", gap: "10px", marginBottom: "10px" }}
+              >
+                <img
                   className="imgforpe"
                   src="https://s3.amazonaws.com/splitwise/uploads/category/icon/square_v2/uncategorized/general@2x.png"
                   alt=""
@@ -302,7 +593,6 @@ export default function Group() {
                 >
                   <InputGroup w={"93%"}>
                     <InputLeftElement
-                      
                       pointerEvents="none"
                       color="gray.500"
                       fontSize="1.1em"
@@ -314,7 +604,6 @@ export default function Group() {
                     <Input
                       id="editprice"
                       placeholder="0.00"
-                  
                       type="number"
                       background="white"
                     />
@@ -324,13 +613,17 @@ export default function Group() {
                     size="md"
                     id="editdate"
                     background="white"
-                   
                     w={"93%"}
                     type="datetime-local"
                   />{" "}
                 </div>
               </div>
-              <Input placeholder="Description" id="edittitle" background="white" w={"103%"} />{" "}
+              <Input
+                placeholder="Description"
+                id="edittitle"
+                background="white"
+                w={"103%"}
+              />{" "}
               <br />
               <div
                 style={{
@@ -339,40 +632,53 @@ export default function Group() {
                   marginTop: "10px",
                 }}
               >
-                <Button colorScheme="pink" onClick={async()=>{await patchChange(); await onClose()}}>Edit Expence</Button>
+                <Button
+                  colorScheme="pink"
+                  onClick={async () => {
+                    await patchChange();
+                    await onClose();
+                  }}
+                >
+                  Edit Expence
+                </Button>
               </div>
             </ModalBody>
-            <ModalFooter>
-              
-            </ModalFooter>
+            <ModalFooter></ModalFooter>
           </ModalContent>
         </Modal>
-      
-      <AlertDialog
-        motionPreset='slideInBottom'
-        leastDestructiveRef={cancelRef}
-        onClose={onClose1}
-        isOpen={isOpen1}
-        isCentered
-      >
-        <AlertDialogOverlay />
 
-        <AlertDialogContent>
-          <AlertDialogHeader>Sure you want to delete an Expense?</AlertDialogHeader>
-          <AlertDialogCloseButton />
-          <AlertDialogBody>
+        <AlertDialog
+          motionPreset="slideInBottom"
+          leastDestructiveRef={cancelRef}
+          onClose={onClose1}
+          isOpen={isOpen1}
+          isCentered
+        >
+          <AlertDialogOverlay />
 
-          </AlertDialogBody>
-          <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose1}>
-              No
-            </Button>
-            <Button colorScheme='red' ml={3} onClick={async()=>{  await onClose1()}} >
-              Yes
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              Sure you want to delete an Expense?
+            </AlertDialogHeader>
+            <AlertDialogCloseButton />
+            <AlertDialogBody></AlertDialogBody>
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose1}>
+                No
+              </Button>
+              <Button
+                colorScheme="red"
+                ml={3}
+                onClick={async () => {
+                  await deleteDatafromgroup(deleteId,dispatch)
+                  await onClose1();
+                }}
+              >
+                Yes
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </div>
   );

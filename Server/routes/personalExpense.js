@@ -30,7 +30,7 @@ router.patch("/:id", async (req, res) => {
   try {
     let personalExpense = await PersonalExpense.findOne({owner})
     const itemIndex = personalExpense.personalexpense.findIndex((item) => item._id == itemId) 
-    console.log(itemIndex)
+    // console.log(itemIndex)
     if (itemIndex > -1) {
      
       personalExpense.personalexpense[itemIndex].date=date;

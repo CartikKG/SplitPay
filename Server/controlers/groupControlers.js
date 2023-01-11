@@ -24,37 +24,50 @@ const getGroupByID = (id) => {
 const getcurrentGroupByID=(id)=>{
   return Group.findById(id).populate('admin').populate('members.member').populate("bills.by");;
 }
-const deleteGroupByID = async (id, userId) => {
-  let Group = await Group.findById(id);
+// deletebillByID
+const deletebillByID = async(itemId, groupId) => {
+  let group=await Group.findOne({ _id:groupId}).populate('admin').populate('members.member').populate("bills.by");
 
-  if (!Group) {
+  if (!group) {
     return "Group does not exist";
   }
-
-  if (String(Group.userId._id) !== String(userId)) {
-    return "User can't delete the Group";
+  const itemIndex = group.bills.findIndex((item) => item._id == itemId);
+  if(itemIndex>-1){
+    group.bills.splice(itemIndex, 1);
+    group.save();
+    return group;
+  }else{
+    return "no item found"
   }
 
-  Group = await Group.findByIdAndDelete(id);
-
-  return Group;
 };
-const patchGroupByID = async (id, patch, userId) => {
-  const user = await Group.findById(id);
-  let Group = await Group.findById(id);
-  if (!Group) {
+const JoinGroupbyId= async (groupId, id)=>{
+    let group=await  Group.findOne({ _id:groupId});
+    if(group){
+          group.members.push({member:id})
+          group.save();
+          return group;
+    }else{
+      return "Invalid Joining Code"
+    }
+}
+
+const patchcurrentGroupByID = async (title,date,totalBill,itemId,userId, id) => {
+  const group=await  Group.findOne({ _id:id}).populate('admin').populate('members.member').populate("bills.by");;
+  if (!group) {
     return "Group does not exist";
   }
-
-  if (String(Group.userId._id) !== String(userId)) {
-    return "User can't edit the Group";
+  const itemIndex = group.bills.findIndex((item) => item._id == itemId) 
+  if(itemIndex>-1){
+    group.bills[itemIndex].bill.title=title;
+    group.bills[itemIndex].bill.date=date;
+    group.bills[itemIndex].bill.totalBill=totalBill;
+    group.save();
+    return group;
   }
-
-  return Group.findByIdAndUpdate(id, patch, { new: true });
 };
 
 const createNewGroup = async (title,type,img, userId) => {
-  // let group=await Group.findOne({admin:userId});
   let ansa = await Group.create({
     title:title,
     img: img,
@@ -90,18 +103,15 @@ const createNewGroup = async (title,type,img, userId) => {
 //    type:Number
 // }
 const addDataGroup = async (title, date, totalBill,id,by)=>{
-  // console.log(userId);
-      let group=await Group.findOne({ _id:id});
+    let group=await Group.findOne({ _id:id}).populate('admin').populate('members.member').populate("bills.by");
       if(group){
-        // console.log("object")
-        // console.log(group._id)
         group.bills.push({bill:{date,title,totalBill},by})
-        // group.balanceofUsers.push({id,})
+       
         
-        group.save();
-        let groups=await Group.findOne({ _id:id}).populate("bills.by");
+        await group.save();
+        let groups=await Group.findOne({ _id:id}).populate('admin').populate('members.member').populate("bills.by");
         return groups;
-      //  console.log(group,"-------------");
+     
 
       }else{
         return "Group Not Found with Id";
@@ -112,8 +122,9 @@ module.exports = {
   getAllGroup,
   getGroupByID,
   getcurrentGroupByID,
-  deleteGroupByID,
-  patchGroupByID,
+  patchcurrentGroupByID,
   addDataGroup,
+  JoinGroupbyId,
   createNewGroup,
+  deletebillByID
 };
