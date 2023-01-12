@@ -30,7 +30,7 @@ export const addDatatogroup=async(data,dispatch)=>{
             body:JSON.stringify(data)
         })
         let res2=await res.json();
-        console.log(res2)
+        // console.log(res2)
         dispatch({
             type:"CurrentGroupData",
             payload:{...res2}
@@ -123,7 +123,7 @@ export const fetchStartGroup=(dispatch)=>{
     let {allgroup,CurrentGroupData} =store.getState();
 //    console.log("OK-4")
    if(!CurrentGroupData.data&&allgroup.data &&allgroup.data.length!=0){
-       console.log("OK-2")
+    //    console.log("OK-2")
        getCurrentgroup(allgroup.data[0]._id, dispatch);
     }
    
@@ -136,7 +136,7 @@ export const getCurrentgroup=async(groupId,dispatch)=>{
     try {
         let res= await fetch(`${process.env.REACT_APP_URL_API}/group/current/${groupId}`)
         let ress=await res.json();
-        console.log(ress)
+        // console.log(ress)
         dispatch({
             type:"CurrentGroupData",
             payload:{...ress}

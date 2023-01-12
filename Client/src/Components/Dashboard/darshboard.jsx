@@ -152,7 +152,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
   function logoutFunction(){
     localStorage.clear();
     logoutUser(dispatch);
-    window.open('http://localhost:3000', "_self");
+    window.open(`${process.env.REACT_APP_CLIENT}`, "_self");
   }
   return (
     <Flex
