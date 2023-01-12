@@ -158,7 +158,9 @@ export const joinGroup=async (groupId,dispatch)=>{
         let res2=await res.json();
         // console.log(res2)
         // return res2;
-        fetchAllGroup(dispatch);
+        // fetchAllGroup()
+        await getCurrentgroup(groupId,dispatch);
+        // fetchAllGroup(dispatch);
 
     } catch (error) {
         

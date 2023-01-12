@@ -136,7 +136,8 @@ export default function Personal() {
                   alt=""
                 />
               </div>
-              <h3>{el.title}</h3> <div>₹ {el.totalBill}</div>{" "}
+              <div className="titleNames"> 
+              <h3>{el.title}</h3></div> <div>₹ {el.totalBill}</div>{" "}
             
               <FiXCircle fontSize={"18px"} color={"brown"} onClick={async(event)=>{ event.stopPropagation();  setdeleteId(el._id);onOpen1()}} />
             </div>

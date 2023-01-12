@@ -88,10 +88,14 @@
   align-items: center;
   width:190px
 }
-/* className=""
-style={{
-  
-}} */
+#joiningOnly{
+    display: flex;
+    justify-content: space-around;
+}
+#imgfromgroup>img{
+    margin: auto;
+    border-radius: 100px;
+}
 @media (max-width:560px) {
     #inputBox{
         flex-wrap: wrap;

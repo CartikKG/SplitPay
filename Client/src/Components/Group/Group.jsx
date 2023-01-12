@@ -210,7 +210,7 @@ export default function Group() {
     onOpen: onOpen3,
     onClose: onClose3,
   } = useDisclosure();
-
+  if(allgroup &&  allgroup.data&& allgroup.data.length!=0){
   return (
     <div>
       <div id="showAllgroups">
@@ -682,4 +682,126 @@ export default function Group() {
       </div>
     </div>
   );
+}else{
+   return   <>    <div>
+   <div id="joiningOnly">
+     <Button colorScheme="purple" onClick={onOpen5}>
+       Join group
+     </Button>
+     <Button colorScheme="teal" onClick={onOpen3}>
+       Create new group
+     </Button>
+   </div>
+ </div>
+<div id="imgfromgroup"><img src="https://cdn.dribbble.com/users/68398/screenshots/5864834/16.gif" alt="" /></div>
+ <div id="createnewGroup">
+        <Modal onClose={onClose3} size={"xs"} isOpen={isOpen3}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader bg="teal" h={"30px"} color="white">
+              Create new group
+            </ModalHeader>
+            <ModalCloseButton color="white" />
+            <ModalBody>
+              <Input
+                placeholder="Enter group name"
+                id="groupName"
+                background="white"
+                w={"100%"}
+                mb={"8px"}
+              />
+              <Select placeholder="Select group type" id="groupType">
+                <option value="Home">Home</option>
+                <option value="Trip">Trip</option>
+                <option value="Couple">Couple</option>
+                <option value="Other">Other</option>
+              </Select>
+              <h2
+                style={{
+                  color: "grey",
+                  fontSize: "14px",
+                  marginTop: "10px",
+                  marginBottom: "10px",
+                }}
+              >
+                You can invite people after creating a group
+              </h2>
+              {/* <br /> */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  marginTop: "6px",
+                }}
+              >
+                <Button
+                  colorScheme="teal"
+                  onClick={async () => {
+                    await fetchedData();
+                    await onClose3();
+                  }}
+                >
+                  Create
+                </Button>
+              </div>
+            </ModalBody>
+            <ModalFooter></ModalFooter>
+          </ModalContent>
+        </Modal>
+      </div>
+      <div id="joinGroup">
+        <Modal onClose={onClose5} size={"xs"} isOpen={isOpen5}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader bg="purple.500" h={"30px"} color="white">
+              Join group
+            </ModalHeader>
+            <ModalCloseButton color="white" />
+            <ModalBody>
+              <Input
+                placeholder="Enter Join Code"
+                id="joinGroupid"
+                background="white"
+                w={"100%"}
+                mb={"8px"}
+              />
+             
+              <h2
+                style={{
+                  color: "grey",
+                  fontSize: "14px",
+                  marginTop: "10px",
+                  marginBottom: "10px",
+                  textAlign: "center",
+                }}
+              >
+                Enter your joining code
+              </h2>
+               <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  marginTop: "6px",
+                }}
+              >
+                <Button
+                  colorScheme="purple"
+                  onClick={async () => {
+                    let res=document.getElementById('joinGroupid').value;
+                    await joinGroup(res,dispatch);
+                    await onClose5();
+                  }}
+                >
+                  Join Now !
+                </Button>
+              </div>
+            </ModalBody>
+            <ModalFooter></ModalFooter>
+          </ModalContent>
+        </Modal>
+      </div>
+ 
+ 
+ </>
+}
 }

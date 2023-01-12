@@ -47,7 +47,7 @@ const groupSchema=new mongoose.Schema(
         balanceofUsers:[ 
                 { 
                     user:{type:ObjectID,ref:'users', require:true},
-                    info:{title:String,youPay:Number,youTake:Number,payTo:String}
+                    info:{youPay:Number,youTake:Number,youGive:Number,takefrom:[{member:{type:ObjectID}}],payTo:[{member:{type:ObjectID}}]}
                 }
         ],
         grouptotal:{
