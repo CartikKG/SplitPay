@@ -3,6 +3,7 @@ import Carousel from "react-material-ui-carousel";
 import "./home.css"
 import Img2 from "../../assets/trip2.jpg"
 import Img3 from "../../assets/trip3.jpg"
+import Img4 from "../../assets/splipay.png"
 import { Link } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react'
 import {
@@ -170,7 +171,7 @@ Keep track of your shared expenses and balances with housemates, trips, groups, 
               w={'100%'}
               h={'100%'}
               src={
-                'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=800&q=80'
+                Img4
               }
             />
           </Box>
