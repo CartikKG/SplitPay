@@ -47,7 +47,11 @@ export const addPersonalExpense=async(data,dispatch)=>{
             body:JSON.stringify(data)
         })
         let ress=await res.json();
-        fetchPrnlEx(dispatch,userId);
+        
+        dispatch({
+            type:"PEXPENCE",
+            payload:{...ress}
+        })
     } catch (error) {
         console.log(error)
     }
@@ -56,7 +60,7 @@ export const fetchPrnlEx=async(dispatch,userId)=>{
     try {
         let res= await fetch(`${process.env.REACT_APP_URL_API}/expense/${userId}`)
         let ress=await res.json();
-        // console.log(ress);
+        
         dispatch({
             type:"PEXPENCE",
             payload:{...ress}
@@ -74,7 +78,12 @@ export const patchPrnlEx=async(dispatch,userId,data)=>{
             },
             body:JSON.stringify(data)
         })
-        fetchPrnlEx(dispatch,userId)
+        let ress=await res.json();
+        dispatch({
+            type:"PEXPENCE",
+            payload:{...ress}
+        })
+        // fetchPrnlEx(dispatch,userId)
     } catch (error) {
         
     }
@@ -90,7 +99,11 @@ export const deletePrnlEx=async(dispatch,data)=>{
             },
             body:JSON.stringify(data)
         })
-        fetchPrnlEx(dispatch,userId)
+        let ress=await res.json();
+        dispatch({
+            type:"PEXPENCE",
+            payload:{...ress}
+        })
     } catch (error) {
         
     }

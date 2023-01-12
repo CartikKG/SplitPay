@@ -15,6 +15,8 @@ import {   Flex, Icon, Text } from "@chakra-ui/react";
 // import React from "react";
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 
 function StatsCard(props) {
@@ -38,8 +40,19 @@ function StatsCard(props) {
 }
 
 export default function HomeDashboard(props) {
+  let [groupt,setGroupt]=useState(0);
   const store=useSelector((state)=>state);
-  // console.log(store);
+  let userId=localStorage.getItem('userId');
+  useEffect(()=>{
+    if(store.CurrentGroupData.data && store.CurrentGroupData.data.balanceofUsers ){
+      store.CurrentGroupData.data.balanceofUsers.forEach(element => {
+        if(element.user._id==userId){
+          setGroupt(element.info.youPay);
+          
+        }
+      });
+    } 
+  },[store.CurrentGroupData])
   return (
     <>
         <div id="tophomebutton"> 
@@ -56,9 +69,9 @@ export default function HomeDashboard(props) {
         What is our company doing?
       </chakra.h1> */}
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={{ base: 5, lg: 8 }}>
-        <StatsCard borderColor="red" title={'Total Expense'} stat={ store.PEXPENCE && store.PEXPENCE.data &&  `₹ ${store.PEXPENCE.data.bill}`} />
-        <StatsCard title={'Group Expense'} stat={'₹ 50,000'} />
-        <StatsCard title={'Personal Expense'} stat={ store.PEXPENCE && store.PEXPENCE.data &&  `₹ ${store.PEXPENCE.data.bill}`} />
+        <StatsCard borderColor="red" title={'Total Expense'} stat={ store.PEXPENCE && store.PEXPENCE.data &&  `₹ ${store.PEXPENCE.data.bill+groupt}`} />
+        <StatsCard title={'Group Expense'} stat={ `₹ ${groupt}`}  />
+        <StatsCard title={'Personal Expense'} stat={ store.PEXPENCE && store.PEXPENCE.data &&   `₹ ${store.PEXPENCE.data.bill}`} />
       </SimpleGrid>
 
       {/* <Box

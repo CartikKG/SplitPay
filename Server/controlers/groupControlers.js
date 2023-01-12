@@ -18,15 +18,15 @@ const getAllGroup = async (page, limit, sortBy, _order, searchBy, q) => {
 
 
 const getGroupByID = (id) => {
-  return Group.find({"members.member":id}).populate('admin').populate('members.member').populate("bills.by");
+  return Group.find({"members.member":id}).populate('admin').populate('members.member').populate("bills.by").populate("balanceofUsers.user");
   
 };
 const getcurrentGroupByID=(id)=>{
-  return Group.findById(id).populate('admin').populate('members.member').populate("bills.by");;
+  return Group.findById(id).populate('admin').populate('members.member').populate("bills.by").populate("balanceofUsers.user");;
 }
 // deletebillByID
 const deletebillByID = async(itemId, groupId) => {
-  let group=await Group.findOne({ _id:groupId}).populate('admin').populate('members.member').populate("bills.by");
+  let group=await Group.findOne({ _id:groupId}).populate('admin').populate('members.member').populate("bills.by").populate("balanceofUsers.user");
 
   if (!group) {
     return "Group does not exist";
@@ -34,8 +34,44 @@ const deletebillByID = async(itemId, groupId) => {
   const itemIndex = group.bills.findIndex((item) => item._id == itemId);
   if(itemIndex>-1){
     group.bills.splice(itemIndex, 1);
-    group.save();
-    return group;
+    let arr=[];
+    group.members.forEach((element) => {
+     arr.push({
+        user:element.member._id,
+        info:{
+        youPay:0,
+        youTake:0,
+        youGive:0,
+        takefrom:[],
+        payTo:[],
+      }
+    })
+    });
+    let totalAmount=0;
+   for (let index = 0; index < group.bills.length; index++) {
+          let id=group.bills[index].by._id;
+          totalAmount+=Number(group.bills[index].bill.totalBill);
+          for (let inde = 0; inde < arr.length; inde++) {
+            if( String(arr[inde].user)==String(id)){
+              console.log("object-OKS")
+                 arr[inde].info.youPay=group.bills[index].bill.totalBill+arr[inde].info.youPay;
+             }
+          }
+    }
+    let equal=Math.round( totalAmount/group.members.length);
+    for (let index = 0; index < arr.length; index++) {
+      if(arr[index].info.youPay>equal){
+        arr[index].info.youTake=arr[index].info.youPay-equal;
+      }else{
+        arr[index].info.youGive=equal-arr[index].info.youPay;
+      }
+    }
+    group.balanceofUsers=arr;
+    group.grouptotal=totalAmount;
+    await group.save();
+    let groups=await Group.findOne({ _id:groupId}).populate('admin').populate('members.member').populate("bills.by").populate("balanceofUsers.user");
+    return groups;
+ 
   }else{
     return "no item found"
   }
@@ -64,7 +100,7 @@ const JoinGroupbyId= async (groupId, id)=>{
 }
 
 const patchcurrentGroupByID = async (title,date,totalBill,itemId,userId, id) => {
-  const group=await  Group.findOne({ _id:id}).populate('admin').populate('members.member').populate("bills.by");;
+  const group=await  Group.findOne({ _id:id}).populate('admin').populate('members.member').populate("bills.by").populate("balanceofUsers.user");
   if (!group) {
     return "Group does not exist";
   }
@@ -73,8 +109,46 @@ const patchcurrentGroupByID = async (title,date,totalBill,itemId,userId, id) => 
     group.bills[itemIndex].bill.title=title;
     group.bills[itemIndex].bill.date=date;
     group.bills[itemIndex].bill.totalBill=totalBill;
-    group.save();
-    return group;
+    let arr=[];
+    group.members.forEach((element) => {
+     arr.push({
+        user:element.member._id,
+        info:{
+        youPay:0,
+        youTake:0,
+        youGive:0,
+        takefrom:[],
+        payTo:[],
+      }
+    })
+    });
+    let totalAmount=0;
+   for (let index = 0; index < group.bills.length; index++) {
+          let id=group.bills[index].by._id;
+          totalAmount+=Number(group.bills[index].bill.totalBill);
+          for (let inde = 0; inde < arr.length; inde++) {
+            if( String(arr[inde].user)==String(id)){
+              // console.log("object-OKS")
+                 arr[inde].info.youPay=group.bills[index].bill.totalBill+arr[inde].info.youPay;
+             }
+          }
+    }
+    let equal=Math.round( totalAmount/group.members.length);
+    for (let index = 0; index < arr.length; index++) {
+      if(arr[index].info.youPay>equal){
+        arr[index].info.youTake=arr[index].info.youPay-equal;
+      }else{
+        arr[index].info.youGive=equal-arr[index].info.youPay;
+      }
+    }
+    group.balanceofUsers=arr;
+    group.grouptotal=totalAmount;
+    await group.save();
+    let groups=await Group.findOne({ _id:id}).populate('admin').populate('members.member').populate("bills.by").populate("balanceofUsers.user");
+    return groups;
+ 
+  }else{
+    return "item not found"
   }
 };
 
@@ -114,7 +188,8 @@ const createNewGroup = async (title,type,img, userId) => {
 //    type:Number
 // }
 const addDataGroup = async (title, date, totalBill,id,by)=>{
-    let group=await Group.findOne({ _id:id}).populate('admin').populate('members.member').populate("bills.by");
+    let group=await Group.findOne({ _id:id}).populate('admin').populate('members.member').populate("bills.by").populate("balanceofUsers.user");
+
       if(group){
         group.bills.push({bill:{date,title,totalBill},by})
         let arr=[];
@@ -131,19 +206,17 @@ const addDataGroup = async (title, date, totalBill,id,by)=>{
         })
         });
         let totalAmount=0;
-        // console.log(arr, "BEFORE-2")
-        for (let index = 0; index < group.bills.length; index++) {
+       for (let index = 0; index < group.bills.length; index++) {
               let id=group.bills[index].by._id;
               totalAmount+=Number(group.bills[index].bill.totalBill);
               for (let inde = 0; inde < arr.length; inde++) {
-                // console.log(arr[inde].user+" - "+id )
                 if( String(arr[inde].user)==String(id)){
                   console.log("object-OKS")
                      arr[inde].info.youPay=group.bills[index].bill.totalBill+arr[inde].info.youPay;
                  }
               }
         }
-        let equal=totalAmount/group.bills.length;
+        let equal=Math.round( totalAmount/group.members.length);
         for (let index = 0; index < arr.length; index++) {
           if(arr[index].info.youPay>equal){
             arr[index].info.youTake=arr[index].info.youPay-equal;
@@ -151,11 +224,10 @@ const addDataGroup = async (title, date, totalBill,id,by)=>{
             arr[index].info.youGive=equal-arr[index].info.youPay;
           }
         }
-        console.log(arr, "BEFORE-3")
         group.balanceofUsers=arr;
-        
         await group.save();
-        let groups=await Group.findOne({ _id:id}).populate('admin').populate('members.member').populate("bills.by");
+        group.grouptotal=to/talAmount;
+        let groups=await Group.findOne({ _id:id}).populate('admin').populate('members.member').populate("bills.by").populate("balanceofUsers.user");
         return groups;
      
 

@@ -61,7 +61,17 @@ export default function Personal() {
       date,
     };
     addPersonalExpense(obj, dispatch);
-
+    document.getElementById("title").value="";
+    document.getElementById("totalBill").value="";
+    document.getElementById("inputcalendar").value="";
+    toast({
+      title: "Expense Added  ",
+      description: "",
+      status: "success",
+      duration: 2000,
+      position: "top",
+      isClosable: true,
+    });
     }
    
   }function setInput(el){

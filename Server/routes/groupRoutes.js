@@ -144,6 +144,7 @@ route.post("/invite/:id", async (req, res) => {
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
         console.log(error);
+        res.send({ error: "Done" });
       } else {
         console.log("Email sent: " + info.response);
         res.send({ Done: "Done" });

@@ -58,8 +58,8 @@ router.post("/personal/:id", async (req, res) => {
    if (personal) {
      personal.personalexpense.push({title, date, totalBill})
      personal.bill =Number(personal.bill)+Number( totalBill),
-     personal.save();
-     return res.send({date:personal});
+     await personal.save();
+     return res.send({data:personal});
 
     } else {
     
