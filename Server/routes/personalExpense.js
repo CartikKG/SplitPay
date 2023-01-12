@@ -1,7 +1,7 @@
 const express = require("express");
 const PersonalExpense = require("../models/personalExpense");
 // const Item = require("../models/product.model");
-const Auth = require("../Middleware/authorization");
+const Auth = require("../middleware/authorization");
 
 const router = new express.Router();
 

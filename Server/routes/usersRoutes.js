@@ -1,7 +1,7 @@
 const express = require("express");
 const Users = require("../controlers/userControlers");
 const User = require("../models/users.model");
-const authorization = require("../Middleware/authorization");
+const authorization = require("../middleware/authorization");
 const route = express.Router();
 
 route.get("/", async (req, res) => {

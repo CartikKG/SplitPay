@@ -1,5 +1,5 @@
 const express = require("express");
-const authorization = require("../Middleware/authorization");
+const authorization = require("../middleware/authorization");
 const Group = require("../controlers/groupControlers");
 var nodemailer = require("nodemailer");
 const route = express.Router();
@@ -147,9 +147,10 @@ route.post("/invite/:id", async (req, res) => {
       from: "splitpayinvite@gmail.com",
       to: `${email}`,
       subject: "Invitation For join Group",
-      text: `Hi ${emailname}, ${name} is invited you to join group  "${groupName}" 
-             Here is the joining code : -  ${id}     
+      text: `      
             `,
+      html:`Hi,<h4>${emailname}</h4>,${name} is invited you to join group <h4>"${groupName}"</h4>
+     Here is the joining code : - <h2> ${id}</h2><a href="https://splitpays.netlify.app/">splitpays.netlify.app</a>`
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
