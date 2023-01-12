@@ -9,8 +9,8 @@ export default function PageNotFound() {
   loginCheck(dispatch)
   return (
     <Box>
-    
-    <h1> Not Found</h1>
+     <img style={{margin:"auto", borderRadius:"35px"}} src="https://static.wixstatic.com/media/09b339_1fbf7214f9774513bda87b74f5ea2bed~mv2.gif" alt="" srcset="" />
+    {/* <h1> Not Found</h1> */}
     </Box>
   );
 }

@@ -68,9 +68,9 @@ export default function HomeDashboard(props) {
     <Box maxW="7xl" mx={'auto'} pt={5} px={{ base: 2, sm: 12, md: 17 }}>
 
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={{ base: 5, lg: 8 }}>
-        <StatsCard borderColor="red" title={'Total Expense'} stat={ store.PEXPENCE && store.PEXPENCE.data &&  `₹ ${store.PEXPENCE.data.bill+groupt}`} />
+        <StatsCard borderColor="red" title={'Total Expense'} stat={ store.PEXPENCE && store.PEXPENCE.data ?  `₹ ${store.PEXPENCE.data.bill+groupt}`:  `₹ 0`} />
         <StatsCard title={'Group Expense'} stat={ `₹ ${groupt}`}  />
-        <StatsCard title={'Personal Expense'} stat={ store.PEXPENCE && store.PEXPENCE.data &&   `₹ ${store.PEXPENCE.data.bill}`} />
+        <StatsCard title={'Personal Expense'} stat={ store.PEXPENCE && store.PEXPENCE.data ?   `₹ ${store.PEXPENCE.data.bill}`: `₹ 0` } />
       </SimpleGrid>
     </Box>
     <div id="allgroupps">

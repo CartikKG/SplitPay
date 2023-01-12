@@ -10,6 +10,7 @@ export const createNewgroup=async(dispatch, data)=>{
             body:JSON.stringify(data)
         })
         let ress=await res.json();
+        console.log(ress);
         dispatch({
             type:"CurrentGroup",
             payload:ress.data._id
@@ -159,7 +160,7 @@ export const joinGroup=async (groupId,dispatch)=>{
         // console.log(res2)
         // return res2;
         // fetchAllGroup()
-        await getCurrentgroup(groupId,dispatch);
+        await fetchAllGroup(dispatch);
         // fetchAllGroup(dispatch);
 
     } catch (error) {

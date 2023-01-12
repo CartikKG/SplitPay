@@ -644,7 +644,7 @@ export default function Group() {
                   style={{ display: "flex", gap: "10px", marginBottom: "10px" }}
                 >
                   <img
-                    className="imgforpe"
+                    className="imgforpxx"
                     src="https://s3.amazonaws.com/splitwise/uploads/category/icon/square_v2/uncategorized/general@2x.png"
                     alt=""
                   />
@@ -655,7 +655,7 @@ export default function Group() {
                       gap: "10px",
                     }}
                   >
-                    <InputGroup w={"93%"}>
+                    <InputGroup w={"85%"}>
                       <InputLeftElement
                         pointerEvents="none"
                         color="gray.500"
@@ -677,7 +677,7 @@ export default function Group() {
                       size="md"
                       id="editdate"
                       background="white"
-                      w={"93%"}
+                      w={"85%"}
                       type="datetime-local"
                     />{" "}
                   </div>

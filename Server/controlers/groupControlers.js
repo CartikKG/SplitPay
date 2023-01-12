@@ -88,8 +88,22 @@ const JoinGroupbyId= async (groupId, id)=>{
        });
        if(!flag){
           group.members.push({member:id})
-          group.save();
-          return group;
+          let arr=[];
+          group.members.forEach((element) => {
+              arr.push({
+                  user:element.member._id,
+                  info:{
+                  youPay:0,
+                  youTake:0,
+                  youGive:0,
+                  takefrom:[],
+                  payTo:[],
+              }
+          })});
+          group.balanceofUsers=arr;
+          await group.save();
+          let groups=await Group.findOne({ _id:groupId}).populate('admin').populate('members.member').populate("bills.by").populate("balanceofUsers.user");
+          return groups;
        }else{
         return "already Added"
        }
@@ -163,7 +177,25 @@ const createNewGroup = async (title,type,img, userId) => {
     members: [{member:userId}],
     grouptotal: 0,
   });
-  return ansa; 
+  
+  let group=await Group.findOne({ _id:ansa._id}).populate('admin').populate('members.member').populate("bills.by").populate("balanceofUsers.user");
+    let arr=[];
+    group.members.forEach((element) => {
+        arr.push({
+            user:element.member._id,
+            info:{
+            youPay:0,
+            youTake:0,
+            youGive:0,
+            takefrom:[],
+            payTo:[],
+        }
+    })});
+    group.balanceofUsers=arr;
+    await group.save();
+     let groups=await Group.findOne({ _id:group._id}).populate('admin').populate('members.member').populate("bills.by").populate("balanceofUsers.user");
+    return groups;
+  // return ansa; 
   
 };
 
