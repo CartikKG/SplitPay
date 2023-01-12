@@ -77,6 +77,17 @@ route.delete("/current/:id", async (req, res) => {
     return res.status(500).send({ error: error.message });
   }
 });
+route.delete("/admin/:id", async (req, res) => {
+    console.log("object-delet")
+  let groupId = req.params.id;
+  let {userId} = req.body;
+  try {
+    const data = await Group.deletegroupsByID(groupId, userId);
+    return res.status(200).send({ data });
+  } catch (error) {
+    return res.status(500).send({ error: error.message });
+  }
+});
 
 route.get("/:id", async (req, res) => {
   let id = req.params.id;

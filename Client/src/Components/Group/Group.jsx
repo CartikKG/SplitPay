@@ -297,6 +297,9 @@ export default function Group() {
             Add Expence
           </Button>
         </div>
+        {/* <div id>
+
+        </div> */}
         {/*  */}
         <div id="dataparentDiv">
           <div id="dataGroupsall">
@@ -424,10 +427,10 @@ export default function Group() {
                     {" "}
                     <Avatar size={"md"} src={el.user.avatar} />{" "}
 
-                    <div style={{display:"flex", flexDirection:"column", alignItems:"flex-end"}}> 
+                    <div className="allmemberss" > 
                     <h1> {el.user.name}</h1>{" "}
                     
-                     {el.info.youGive!=0?<div style={{display:"flex",alignItems:"end",color:"#cd0000",gap:"5px"}}> <h1 style={{fontSize:"12px"}}>owes</h1> <h1>₹ {el.info.youGive} </h1></div> :<div style={{display:"flex",alignItems:"end",color:"green",gap:"5px"}}> <h1 style={{fontSize:"12px"}}>get back</h1> <h1>₹ {el.info.youTake} </h1></div> }
+                     {el.info.youGive!=0?<div className="youGive"> <h1  >owes</h1> <h1>₹ {el.info.youGive} </h1></div> :<div className="youTake" > <h1 >get back</h1> <h1>₹ {el.info.youTake} </h1></div> }
                     </div>
                   </div>
                 );

@@ -4,3 +4,12 @@
     gap: 10px;
     flex-wrap: wrap;
 }
+#allgroupps{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    border: 1px solid rgb(193, 201, 193);
+    margin: 14px;
+    padding: 10px;
+}

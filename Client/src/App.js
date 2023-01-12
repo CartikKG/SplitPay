@@ -1,5 +1,6 @@
 import AllRoutes from './Components/AllRoutes/AllRoutes';
 import AllRoutesAfterLogin from './Components/AllRoutes/AllRoutesAfterLogin';
+import "./App.css"
 import { useSelector } from "react-redux";
 
 function App() {

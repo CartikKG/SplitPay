@@ -53,7 +53,7 @@ const deletebillByID = async(itemId, groupId) => {
           totalAmount+=Number(group.bills[index].bill.totalBill);
           for (let inde = 0; inde < arr.length; inde++) {
             if( String(arr[inde].user)==String(id)){
-              console.log("object-OKS")
+              // console.log("object-OKS")
                  arr[inde].info.youPay=group.bills[index].bill.totalBill+arr[inde].info.youPay;
              }
           }
@@ -151,7 +151,9 @@ const patchcurrentGroupByID = async (title,date,totalBill,itemId,userId, id) => 
     return "item not found"
   }
 };
-
+const deletegroupsByID=async(id, userId)=>{
+  return Group.findOneAndDelete(id);
+}
 const createNewGroup = async (title,type,img, userId) => {
   let ansa = await Group.create({
     title:title,
@@ -164,29 +166,7 @@ const createNewGroup = async (title,type,img, userId) => {
   return ansa; 
   
 };
-// bills:[
-//   {  
-//    bill:{
-//        date:Date,
-//        title:String,
-//        totalBill:Number,
-//    },
-//    by:{
-//        type: ObjectID,
-//        ref: 'users',
-//        require:true
-//      }
-//   }
-// ],
-// balanceofUsers:[ 
-//        { 
-//            user:{type:ObjectID,ref:'users', require:true},
-//            info:{youPay:Number,youTake:Number,youGive:Number, takefrom:[{member:{type:ObjectID}}],payTo:[{member:{type:ObjectID}}]}
-//        }
-// ],
-// grouptotal:{
-//    type:Number
-// }
+
 const addDataGroup = async (title, date, totalBill,id,by)=>{
     let group=await Group.findOne({ _id:id}).populate('admin').populate('members.member').populate("bills.by").populate("balanceofUsers.user");
 
@@ -211,7 +191,7 @@ const addDataGroup = async (title, date, totalBill,id,by)=>{
               totalAmount+=Number(group.bills[index].bill.totalBill);
               for (let inde = 0; inde < arr.length; inde++) {
                 if( String(arr[inde].user)==String(id)){
-                  console.log("object-OKS")
+                  // console.log("object-OKS")
                      arr[inde].info.youPay=group.bills[index].bill.totalBill+arr[inde].info.youPay;
                  }
               }
@@ -226,7 +206,7 @@ const addDataGroup = async (title, date, totalBill,id,by)=>{
         }
         group.balanceofUsers=arr;
         await group.save();
-        group.grouptotal=to/talAmount;
+        group.grouptotal=totalAmount;
         let groups=await Group.findOne({ _id:id}).populate('admin').populate('members.member').populate("bills.by").populate("balanceofUsers.user");
         return groups;
      
@@ -244,5 +224,6 @@ module.exports = {
   addDataGroup,
   JoinGroupbyId,
   createNewGroup,
-  deletebillByID
+  deletebillByID,
+  deletegroupsByID
 };

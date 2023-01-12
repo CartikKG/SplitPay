@@ -168,6 +168,21 @@ export const joinGroup=async (groupId,dispatch)=>{
         // return error;
     }   
 }
-export const switchgroup=()=>{
-            
+export const deletegroup=async (CurrentGroup,userId,dispatch)=>{
+    // 
+    try {
+        let res= await fetch(`${process.env.REACT_APP_URL_API}/group/admin/${CurrentGroup}`,{
+            method:"DELETE",
+            headers:{
+                "content-type":"application/json"
+            },
+            body:JSON.stringify({userId})
+        })
+        // let res2=await res.json();
+        fetchAllGroup(dispatch)
+   } catch (error) {
+        
+        console.log(error)
+        // return error;
+    }        
 }
