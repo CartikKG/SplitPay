@@ -1,3 +1,4 @@
+import { ChakraProvider } from '@chakra-ui/react'
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import AllExpence from '../AllExpence/AllExpence'
@@ -5,6 +6,7 @@ import Dashboard from '../Dashboard/darshboard'
 import Friends from '../Friends/Friends'
 import Group from '../Group/Group'
 import HomeDashboard from '../HomeDashboard/HomeDashboard'
+import PageNotFound from '../PageNotFound/PageNotFound'
 import Personal from '../Personal/Personal'
 import Recentactivity from '../Recentactivity/Recentactivity'
 import Setting from '../Setting/Setting'
@@ -21,6 +23,7 @@ export default function AllRoutesAfterLogin() {
             <Route path='/group' element={<Group/>}/>
             <Route path='/friends' element={<Friends/>}/>
             <Route path='/yourdetails' element={<Personal/>}/>
+            <Route path="*" element={  <ChakraProvider> <PageNotFound/> </ChakraProvider>}/>
         </Route>
       </Routes>
     </div>
