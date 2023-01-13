@@ -19,10 +19,19 @@ import {
 import { OAuthButtonGroup } from "./OAuthButtonGroup";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../Actions/AllActions";
 
 const Signup = () => {
   let navigate = useNavigate();
+  // const toast = useToast();
+  const dispatch=useDispatch()
   const toast = useToast();
+  const {isLogin, userData}=useSelector((state)=>state);
+  if(!isLogin && localStorage.getItem('userId')){
+    const token=  localStorage.getItem("userToken");
+    loginUser(token,dispatch)
+  }
   const handleSignup = async () => {
     document.getElementById("signup").innerText = "Loading.....";
     document.getElementById("signup").disabled = true;

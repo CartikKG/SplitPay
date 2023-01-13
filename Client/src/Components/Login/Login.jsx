@@ -19,12 +19,17 @@ import {
 import { useToast } from "@chakra-ui/react";
 import {loginUser} from '../Actions/AllActions'
 import { OAuthButtonGroup } from "../Signup/OAuthButtonGroup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch=useDispatch()
   const toast = useToast();
+  const {isLogin, userData}=useSelector((state)=>state);
+  if(!isLogin && localStorage.getItem('userId')){
+    const token=  localStorage.getItem("userToken");
+    loginUser(token,dispatch)
+  }
   const handleSignin = async () => {
     document.getElementById("signin").innerText = "Loading.....";
 
