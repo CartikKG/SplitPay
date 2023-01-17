@@ -69,7 +69,12 @@ export default function Home() {
   }
   return (
     <>
+  
     <Homex/>
+    <div id="feature">
+    <div> Personal Expense </div>
+    <div> Group Expense </div>
+   </div>
     <ChakraProvider>
     <Container maxW={'7xl'}>
       <Stack
