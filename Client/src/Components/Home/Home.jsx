@@ -24,6 +24,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import {loginUser} from '../Actions/AllActions'
+// import { Link } from 'react-router-dom';
 function Homex() {
 
   return (
@@ -72,8 +73,8 @@ export default function Home() {
   
     <Homex/>
     <div id="feature">
-    <div> Personal Expense </div>
-    <div> Group Expense </div>
+    <Link to="/login"> <div> Personal Expense </div></Link>
+    <Link to="/login"> <div> Group Expense </div></Link>
    </div>
     <ChakraProvider>
     <Container maxW={'7xl'}>

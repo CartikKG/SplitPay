@@ -10,6 +10,7 @@ function generateToken(user) {
 }
 
 const getAllUser = () => {
+
   return User.find();
 };
 const getUserByID = (id) => {

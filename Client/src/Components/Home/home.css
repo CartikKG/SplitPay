@@ -1,28 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
-
-#carousel{
-    height: 400px;
+#carousel {
+  height: 400px;
 }
-#feature{
-    display: flex;
-    gap: 10px;
-    justify-content: space-around;
-    flex-wrap: wrap;
+#feature {
+  display: flex;
+  gap: 10px;
+  justify-content: space-around;
+  /* flex-wrap: wrap; */
 }
-#feature>div{
-    width: 250px;
-    height: 50px;
-    background-color: rgb(230, 50, 179);
-    color: white;
-    font-size: 30px;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    border-radius: 20px;
-    display: flex;
+#feature > div {
+  width: 220px;
+  height: 40px;
+  background-color: #d53f8c;
+  color: white;
+  font-size: 23px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  display: flex;
 }
-#feature>div:hover{
-    cursor: pointer;
- background-color: rgb(64, 64, 87);
+#feature > div:hover {
+  cursor: pointer;
+  background-color: rgb(64, 64, 87);
+}
+@media (max-width:500px) {
+    #feature > div {
+        width: 150px;
+        height: 40px;
+        font-size: 16px;
+        border-radius: 10px;
+      }
 }
