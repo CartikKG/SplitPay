@@ -4,6 +4,7 @@ import "./home.css"
 import Img2 from "../../assets/trip2.jpg"
 import Img3 from "../../assets/trip3.jpg"
 import Img4 from "../../assets/splipay.png"
+import Mobile from "../../assets/splipay.png"
 import { Link } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react'
 import {
